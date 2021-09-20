@@ -12,7 +12,6 @@ def index(data_dir):
     docs = list()
     fpath = os.path.join(data_dir, fname)
     df = pd.read_csv(fpath, skip_blank_lines=True, quotechar= '"', error_bad_lines=False)
-    #df.to_csv("/home/yain/workspace/yacobooks-api/data/books/new.csv", quoting=csv.QUOTE_NONE, index=False)
     df.fillna('', inplace=True)
     count = 0
     for idx, row in df.iterrows():
@@ -22,7 +21,7 @@ def index(data_dir):
       source = makeDoc(row)
       doc = {"_index": "book", "_source": source}
       docs.append(doc)
-      if len(docs) >= 20:
+      if len(docs) >= 100:
         helpers.bulk(es, docs)
         docs = list()
     if len(docs) > 0:
@@ -65,7 +64,8 @@ if __name__ == "__main__":
   user = args.user
   password = args.password
 
-  elasticsearch_host = "http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:9200"
+  #elasticsearch_host = "http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:9200"
+  elasticsearch_host = "http://localhost:9200"
   es = Elasticsearch(elasticsearch_host, http_auth=(user, password))
 
   index(data_dir)
