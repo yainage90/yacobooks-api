@@ -1,0 +1,12 @@
+spring:
+  config:
+    active:
+      on-profile: dev
+
+elasticsearch:
+  host: localhost
+
+logging:
+  config: classpath:logging/log4j2-dev.xml
+  level:
+    root: debug

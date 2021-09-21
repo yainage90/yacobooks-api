@@ -1,0 +1,9 @@
+spring:
+  profiles:
+    group:
+      dev: "common, dev"
+---
+spring:
+  profiles:
+    group:
+      prod: "common, prod"

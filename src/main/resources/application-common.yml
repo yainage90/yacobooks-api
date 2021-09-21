@@ -1,0 +1,13 @@
+spring:
+  config:
+    active:
+      on-profile: common
+
+server:
+  port: 8080
+
+elasticsearch:
+  port: 9200
+  index:
+    book:
+      name: book

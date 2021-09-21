@@ -1,0 +1,12 @@
+spring:
+  config:
+    active:
+      on-profile: prod
+
+elasticsearch:
+  host: ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com
+
+logging:
+  config: classpath:logging/log4j2-prod.xml
+  level:
+    root: info
