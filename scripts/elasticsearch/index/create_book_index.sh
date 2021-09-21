@@ -51,13 +51,20 @@ curl -XPUT  $ELASTICSEARCH_HOST \
           ]
         }
       },
+      "tokenizer": {
+				"title_nori_tokenizer": {
+					"type": "nori_tokenizer",
+					"decompound_mode": "mixed",
+					"discard_punctuation": "true"
+				}
+			},
       "filter": {
-        "ngram_filter": {
+        "ngram4_filter": {
           "type": "ngram",
-          "min_gram": 3,
+          "min_gram": 4,
           "max_gram": 50
         },
-        "author_ngram_filter": {
+        "ngram2_filter": {
           "type": "ngram",
           "min_gram": 2,
           "max_gram": 10
@@ -71,7 +78,27 @@ curl -XPUT  $ELASTICSEARCH_HOST \
             "hanhinsam_jamo"
           ]
         },
-        "title_full_analyzer": {
+        "title_nori_analyzer": {
+          "type": "custom",
+          "tokenizer": "title_nori_tokenizer",
+          "filter": [
+            "lowercase",
+						"nori_readingform"
+          ]
+        },
+        "title_ngram_analyzer": {
+          "type": "custom",
+          "char_filter": [
+            "white_remove_char_filter",
+            "special_character_filter"
+          ],
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "ngram2_filter"
+          ]
+        },
+        "title_spell_analyzer": {
           "type": "custom",
           "char_filter": [
             "white_remove_char_filter",
@@ -83,18 +110,6 @@ curl -XPUT  $ELASTICSEARCH_HOST \
             "hanhinsam_jamo"
           ]
         },
-        "title_term_analyzer": {
-          "type": "custom",
-          "char_filter": [
-            "special_character_filter"
-          ],
-          "tokenizer": "standard",
-          "filter": [
-            "lowercase",
-            "hanhinsam_jamo",
-            "ngram_filter"
-          ]
-        },
         "ac_analyzer": {
           "type": "custom",
           "char_filter": [
@@ -104,7 +119,7 @@ curl -XPUT  $ELASTICSEARCH_HOST \
           "filter": [
             "lowercase",
             "hanhinsam_jamo",
-            "ngram_filter"
+            "ngram4_filter"
           ]
         },
         "chosung_analyzer": {
@@ -150,7 +165,7 @@ curl -XPUT  $ELASTICSEARCH_HOST \
           ],
           "tokenizer": "keyword",
           "filter": [
-            "author_ngram_filter"
+            "ngram2_filter"
           ]
         }
       }
@@ -166,15 +181,19 @@ curl -XPUT  $ELASTICSEARCH_HOST \
       },
       "title": {
         "type": "keyword",
-        "copy_to": ["title_full", "title_term", "title_ac", "title_chosung", "title_engtohan", "title_hantoeng"]
+        "copy_to": ["title_text", "title_ngram", "title_spell", "title_ac", "title_chosung", "title_engtohan", "title_hantoeng"]
       },
-      "title_full": {
+      "title_text": {
         "type": "text",
-        "analyzer": "title_full_analyzer"
+        "analyzer": "title_nori_analyzer"
       },
-      "title_term": {
+      "title_ngram": {
         "type": "text",
-        "analyzer": "title_term_analyzer"
+        "analyzer": "title_ngram_analyzer"
+      },
+      "title_spell": {
+        "type": "text",
+        "analyzer": "title_spell_analyzer"
       },
       "title_ac": {
         "type": "text",
@@ -213,6 +232,9 @@ curl -XPUT  $ELASTICSEARCH_HOST \
         "type": "keyword"
       },
       "description": {
+        "type": "keyword"
+      },
+      "link": {
         "type": "keyword"
       }
     }
