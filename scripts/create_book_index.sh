@@ -9,8 +9,8 @@ curl -XPUT  $ELASTICSEARCH_HOST \
 -d \
 '{
   "settings": {
-    "number_of_shards": 5,
-    "number_of_replicas": 1,
+    "number_of_shards": 3,
+    "number_of_replicas": 0,
     "index.max_ngram_diff": 50,
     "analysis": {
       "char_filter": {
@@ -158,6 +158,9 @@ curl -XPUT  $ELASTICSEARCH_HOST \
   },
   "mappings": {
     "properties": {
+      "isbn10": {
+        "type": "keyword"
+      },
       "isbn13": {
         "type": "keyword"
       },
