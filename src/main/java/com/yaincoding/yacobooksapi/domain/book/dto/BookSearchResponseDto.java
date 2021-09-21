@@ -13,5 +13,5 @@ public class BookSearchResponseDto {
 	
 	private long totalHits;
 	private List<Book> books;
-	private SearchHitStage searchHitStage;
+	private String searchHitStage;
 }
