@@ -1,7 +1,6 @@
 from elasticsearch import Elasticsearch, helpers
 import argparse
 import os
-import csv
 
 import pandas as pd
 
@@ -23,7 +22,7 @@ def index(data_dir):
         continue
       doc = {'_id': source['isbn13'], '_index': 'book', '_source': source}
       docs.append(doc)
-      if len(docs) >= 50:
+      if len(docs) >= 100:
         helpers.bulk(esClient, docs)
         docs.clear()
     if len(docs) > 0:
@@ -41,7 +40,6 @@ def makeDoc(row):
   description = row['description']
 
   source = {
-    'isbn10': '',
     'isbn13': isbn13,
     'title': title,
     'author': author,
