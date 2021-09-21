@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import com.google.gson.Gson;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchRequestDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchResponseDto;
+import com.yaincoding.yacobooksapi.domain.book.dto.SearchHitStage;
 import com.yaincoding.yacobooksapi.domain.book.entity.Book;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
@@ -65,7 +66,7 @@ public class BookServiceImpl implements BookService {
 			SearchRequest searchRequest = createTitleSearchRequest(bookSearchRequestDto);
 			SearchResponse response = esClient.search(searchRequest, RequestOptions.DEFAULT);
 			if (response.getHits().getTotalHits().value > 0) {
-				return createBookSearchResponseDto(response);
+				return createBookSearchResponseDto(response, SearchHitStage.TITLE_SEARCH.getStage());
 			}
 		} catch (IOException e) {
 			log.error(
@@ -81,7 +82,7 @@ public class BookServiceImpl implements BookService {
 			SearchRequest searchRequest = createTitleSpellCorrectSearchRequest(bookSearchRequestDto);
 			SearchResponse response = esClient.search(searchRequest, RequestOptions.DEFAULT);
 			if (response.getHits().getTotalHits().value > 0) {
-				return createBookSearchResponseDto(response);
+				return createBookSearchResponseDto(response, SearchHitStage.SPELL_CORRECT_SEARCH.getStage());
 			}
 		} catch (IOException e) {
 			log.error(
@@ -96,7 +97,7 @@ public class BookServiceImpl implements BookService {
 		try {
 			SearchRequest searchRequest = createTitleNgramSearchRequest(bookSearchRequestDto);
 			SearchResponse response = esClient.search(searchRequest, RequestOptions.DEFAULT);
-			return createBookSearchResponseDto(response);
+			return createBookSearchResponseDto(response, SearchHitStage.NGRAM_SEARCH.getStage());
 		} catch (IOException e) {
 			log.error(
 					"query=" + bookSearchRequestDto.getQuery() + ", page=" + bookSearchRequestDto.getPage(),
@@ -165,8 +166,10 @@ public class BookServiceImpl implements BookService {
 		return searchRequest;
 	}
 
-	private BookSearchResponseDto createBookSearchResponseDto(SearchResponse response) {
+	private BookSearchResponseDto createBookSearchResponseDto(SearchResponse response,
+			String stage) {
 		BookSearchResponseDto responseDto = new BookSearchResponseDto();
+		responseDto.setSearchHitStage(stage);
 		responseDto.setTotalHits(response.getHits().getTotalHits().value);
 		responseDto.setBooks(Arrays.stream(response.getHits().getHits())
 				.map(hit -> new Gson().fromJson(hit.getSourceAsString(), Book.class))
