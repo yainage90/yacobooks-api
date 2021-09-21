@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="ALL">
+    <Properties>
+        <Property name="infoLogName">info</Property>
+        <Property name="warnLogName">warn</Property>
+        <Property name="errorLogName">error</Property>
+        <Property name="layoutPattern">%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p [%t] %-17c{2} \(%13F:%L\) - %msg%n</Property>
+        <Property name="logDir">${sys:user.home}/yacobooks_log</Property>
+    </Properties>
+    <Appenders>
+        <RollingFile name="infoFile" fileName="${logDir}/${infoLogName}.log" filePattern="${logDir}/${infoLogName}_%d{yyyy-MM-dd}_%i.log">
+            <PatternLayout pattern="${layoutPattern}" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="1GB" /> <!-- 1GB 용량이 초과시 DefaultRolloverStrategy 정책만큼 넘버링 -->
+                <TimeBasedTriggeringPolicy module="true" interval="1" /><!-- 일별 로그 파일 생성-->
+            </Policies>
+            <DefaultRolloverStrategy max="10" fileIndex="min" /><!-- 롤링 파일 10개 까지 생성 -->
+        </RollingFile>
+
+        <RollingFile name="warnFile" fileName="${logDir}/${warnLogName}.log" filePattern="${logDir}/${warnLogName}_%d{yyyy-MM-dd}_%i.log">
+            <PatternLayout pattern="${layoutPattern}" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10MB" /> <!-- 10MB 용량이 초과시 DefaultRolloverStrategy 정책만큼 넘버링 -->
+                <TimeBasedTriggeringPolicy module="true" interval="1" /><!-- 일별 로그 파일 생성-->
+            </Policies>
+            <DefaultRolloverStrategy max="50" fileIndex="min" /><!-- 롤링 파일 50개 까지 생성 -->
+            <LevelRangeFilter minLevel="WARN" maxLevel="WARN" onMatch="ACCEPT" onMissMatch="DENY"/>
+        </RollingFile>
+
+        <RollingFile name="errorFile" fileName="${logDir}/${errorLogName}.log" filePattern="${logDir}/${errorLogName}_%d{yyyy-MM-dd}_%i.log">
+            <PatternLayout pattern="${layoutPattern}" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10MB" /> <!-- 10MB 용량이 초과시 DefaultRolloverStrategy 정책만큼 넘버링 -->
+                <TimeBasedTriggeringPolicy module="true" interval="1" /><!-- 일별 로그 파일 생성-->
+            </Policies>
+            <DefaultRolloverStrategy max="50" fileIndex="min" /><!-- 롤링 파일 50개 까지 생성 -->
+            <LevelRangeFilter minLevel="ERROR" maxLevel="ERROR" onMatch="ACCEPT" onMissMatch="DENY"/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <!-- 기본 레벨은 info -->
+        <Root level="info" additivity="false" >
+            <AppenderRef ref="infoFile" level="info" />
+            <AppenderRef ref="warnFile" level="warn" />
+            <AppenderRef ref="errorFile" level="error" />
+        </Root>
+    </Loggers>
+</Configuration>
