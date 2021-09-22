@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.yaincoding.yacobooksapi.domain.book.dto.AutoCompleteSuggestResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchRequestDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchResponseDto;
+import com.yaincoding.yacobooksapi.domain.book.dto.ChosungSuggestResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.entity.Book;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.search.SearchRequest;
@@ -97,6 +98,20 @@ public class BookSearchUtil {
 		return searchRequest;
 	}
 
+	public static SearchRequest createChosungSearchRequest(String query) {
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_chosung", query).boost(2.0f));
+		SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
+		searchSourceBuilder.query(boolQueryBuilder);
+		searchSourceBuilder.from(0);
+		searchSourceBuilder.size(AUTO_COMPLETE_LIMIT);
+
+		SearchRequest searchRequest = new SearchRequest(BOOK_INDEX);
+		searchRequest.source(searchSourceBuilder);
+
+		return searchRequest;
+	}
+
 	public static BookSearchResponseDto createBookSearchResponseDto(SearchResponse response,
 			String stage) {
 		BookSearchResponseDto responseDto = new BookSearchResponseDto();
@@ -110,11 +125,11 @@ public class BookSearchUtil {
 		return responseDto;
 	}
 
-	public static AutoCompleteSuggestResponseDto createAutoCompleteSuggestResponseDto(SearchResponse response) {
+	public static AutoCompleteSuggestResponseDto createAutoCompleteSuggestResponseDto(
+			SearchResponse response) {
 
 		AutoCompleteSuggestResponseDto responseDto = new AutoCompleteSuggestResponseDto();
 		responseDto.setResult("OK");
-		System.out.println(response.getHits().getTotalHits().value);
 		responseDto.setTitles(Arrays.stream(response.getHits().getHits())
 				.map(hit -> hit.getSourceAsMap().get((String) "title").toString())
 				.collect(Collectors.toList()));
@@ -122,4 +137,14 @@ public class BookSearchUtil {
 		return responseDto;
 	}
 
+	public static ChosungSuggestResponseDto createChosungSuggestResponseDto(SearchResponse response) {
+
+		ChosungSuggestResponseDto responseDto = new ChosungSuggestResponseDto();
+		responseDto.setResult("OK");
+		responseDto.setTitles(Arrays.stream(response.getHits().getHits())
+				.map(hit -> hit.getSourceAsMap().get((String) "title").toString())
+				.collect(Collectors.toList()));
+
+		return responseDto;
+	}
 }
