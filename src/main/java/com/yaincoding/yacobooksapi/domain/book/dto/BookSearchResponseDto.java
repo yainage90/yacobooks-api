@@ -11,6 +11,7 @@ import lombok.ToString;
 @ToString
 public class BookSearchResponseDto {
 	
+	private String result;
 	private long totalHits;
 	private List<Book> books;
 	private String searchHitStage;
