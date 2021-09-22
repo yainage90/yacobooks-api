@@ -1,6 +1,6 @@
 package com.yaincoding.yacobooksapi.domain.book.service;
 
-import com.yaincoding.yacobooksapi.domain.book.dto.AutoCompleteResponseDto;
+import com.yaincoding.yacobooksapi.domain.book.dto.AutoCompleteSuggestResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchRequestDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.entity.Book;
@@ -13,6 +13,6 @@ public interface BookService {
 	BookSearchResponseDto search(BookSearchRequestDto bookSearchRequestDto)
 			throws BookSearchException;
 
-	AutoCompleteResponseDto autoComplete(String query) throws BookSearchException;
+	AutoCompleteSuggestResponseDto autoComplete(String query) throws BookSearchException;
 
 }

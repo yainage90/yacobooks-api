@@ -1,6 +1,6 @@
 package com.yaincoding.yacobooksapi.domain.book.controller;
 
-import com.yaincoding.yacobooksapi.domain.book.dto.AutoCompleteResponseDto;
+import com.yaincoding.yacobooksapi.domain.book.dto.AutoCompleteSuggestResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchRequestDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.entity.Book;
@@ -34,7 +34,7 @@ public class BookController {
 	}
 
 	@GetMapping(value = "/ac")
-	public ResponseEntity<AutoCompleteResponseDto> autoComplete(String query) {
+	public ResponseEntity<AutoCompleteSuggestResponseDto> autoComplete(String query) {
 		return ResponseEntity.ok(bookService.autoComplete(query));
 	}
 

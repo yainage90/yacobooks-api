@@ -8,7 +8,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class AutoCompleteResponseDto {
+public class AutoCompleteSuggestResponseDto {
 	
 	private String result;
 	private List<String> titles;

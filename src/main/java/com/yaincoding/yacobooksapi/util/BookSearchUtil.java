@@ -3,7 +3,7 @@ package com.yaincoding.yacobooksapi.util;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import com.google.gson.Gson;
-import com.yaincoding.yacobooksapi.domain.book.dto.AutoCompleteResponseDto;
+import com.yaincoding.yacobooksapi.domain.book.dto.AutoCompleteSuggestResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchRequestDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.entity.Book;
@@ -110,9 +110,9 @@ public class BookSearchUtil {
 		return responseDto;
 	}
 
-	public static AutoCompleteResponseDto createAutoCompleteStrings(SearchResponse response) {
+	public static AutoCompleteSuggestResponseDto createAutoCompleteSuggestResponseDto(SearchResponse response) {
 
-		AutoCompleteResponseDto responseDto = new AutoCompleteResponseDto();
+		AutoCompleteSuggestResponseDto responseDto = new AutoCompleteSuggestResponseDto();
 		responseDto.setResult("OK");
 		System.out.println(response.getHits().getTotalHits().value);
 		responseDto.setTitles(Arrays.stream(response.getHits().getHits())
@@ -121,4 +121,5 @@ public class BookSearchUtil {
 
 		return responseDto;
 	}
+
 }

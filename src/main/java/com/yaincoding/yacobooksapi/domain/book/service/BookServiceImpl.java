@@ -2,7 +2,7 @@ package com.yaincoding.yacobooksapi.domain.book.service;
 
 import java.io.IOException;
 import com.google.gson.Gson;
-import com.yaincoding.yacobooksapi.domain.book.dto.AutoCompleteResponseDto;
+import com.yaincoding.yacobooksapi.domain.book.dto.AutoCompleteSuggestResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchRequestDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.SearchHitStage;
@@ -108,11 +108,11 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public AutoCompleteResponseDto autoComplete(String query) throws BookSearchException {
+	public AutoCompleteSuggestResponseDto autoComplete(String query) throws BookSearchException {
 		SearchRequest searchRequest = BookSearchUtil.createAutoCompleteSearchRequest(query);
 		try {
 			SearchResponse response = esClient.search(searchRequest, RequestOptions.DEFAULT);
-			return BookSearchUtil.createAutoCompleteStrings(response);
+			return BookSearchUtil.createAutoCompleteSuggestResponseDto(response);
 		} catch (IOException e) {
 			log.error("query=" + query, e);
 			throw new BookSearchException("엘라스틱서치 Search API 호출 에러");
