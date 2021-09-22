@@ -10,6 +10,7 @@ import com.yaincoding.yacobooksapi.domain.book.dto.SearchHitStage;
 import com.yaincoding.yacobooksapi.domain.book.entity.Book;
 import com.yaincoding.yacobooksapi.domain.book.exception.BookSearchException;
 import com.yaincoding.yacobooksapi.util.BookSearchUtil;
+import com.yaincoding.yacobooksapi.util.HangulUtil;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -122,6 +123,7 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public ChosungSuggestResponseDto chosungSuggest(String query) throws BookSearchException {
+		query = HangulUtil.decomposeLayeredJaum(query);
 		SearchRequest searchRequest = BookSearchUtil.createChosungSearchRequest(query);
 		try {
 			SearchResponse response = esClient.search(searchRequest, RequestOptions.DEFAULT);
