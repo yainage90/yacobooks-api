@@ -39,7 +39,7 @@ dependencies {
 	testAnnotationProcessor 'org.projectlombok:lombok'
 
 	//cloud
-	implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '7.12.1'
+	implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '7.14.0'
 }
 
 test {
