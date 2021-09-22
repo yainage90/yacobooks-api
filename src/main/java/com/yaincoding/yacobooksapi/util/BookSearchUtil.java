@@ -7,6 +7,7 @@ import com.yaincoding.yacobooksapi.domain.book.dto.AutoCompleteResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchRequestDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.entity.Book;
+import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -18,6 +19,10 @@ public class BookSearchUtil {
 	private static final String BOOK_INDEX = "book";
 	private static final int COUNT_PER_PAGE = 10;
 	private static final int AUTO_COMPLETE_LIMIT = 10;
+
+	public static GetRequest createGetByIdRequest(String id) {
+		return new GetRequest(BOOK_INDEX, id);
+	}
 
 	public static SearchRequest createTitleSearchRequest(BookSearchRequestDto bookSearchRequestDto) {
 
