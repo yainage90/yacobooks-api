@@ -31,8 +31,8 @@ public class BookSearchUtil {
 		int page = bookSearchRequestDto.getPage();
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-		boolQueryBuilder.should().add(QueryBuilders.termQuery("title", query).boost(10.0f));
-		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_text", query).boost(5.0f));
+		boolQueryBuilder.should().add(QueryBuilders.termQuery("title", query).boost(100.0f));
+		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_text", query).boost(20.0f));
 
 		SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
 		searchSourceBuilder.query(boolQueryBuilder);
@@ -51,7 +51,7 @@ public class BookSearchUtil {
 		int page = bookSearchRequestDto.getPage();
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_spell", query).boost(2.0f));
+		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_spell", query).boost(10.0f));
 
 		SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
 		searchSourceBuilder.query(boolQueryBuilder);
@@ -86,7 +86,7 @@ public class BookSearchUtil {
 	public static SearchRequest createAutoCompleteSearchRequest(String query) {
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_ac", query).boost(2.0f));
+		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_ac", query));
 		SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
 		searchSourceBuilder.query(boolQueryBuilder);
 		searchSourceBuilder.from(0);
@@ -100,7 +100,7 @@ public class BookSearchUtil {
 
 	public static SearchRequest createChosungSearchRequest(String query) {
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_chosung", query).boost(2.0f));
+		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_chosung", query));
 		SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
 		searchSourceBuilder.query(boolQueryBuilder);
 		searchSourceBuilder.from(0);
