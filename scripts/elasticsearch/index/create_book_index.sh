@@ -68,6 +68,11 @@ curl -XPUT  $ELASTICSEARCH_HOST \
           "type": "ngram",
           "min_gram": 2,
           "max_gram": 10
+        },
+        "edge_ngram_front_filter": {
+          "type": "edge_ngram",
+          "min_gram": 2,
+          "max_gram": 10
         }
       },
       "analyzer": {
@@ -113,7 +118,8 @@ curl -XPUT  $ELASTICSEARCH_HOST \
         "ac_analyzer": {
           "type": "custom",
           "char_filter": [
-            "white_remove_char_filter"
+            "white_remove_char_filter",
+            "special_character_filter"
           ],
           "tokenizer": "keyword",
           "filter": [
@@ -122,7 +128,7 @@ curl -XPUT  $ELASTICSEARCH_HOST \
             "ngram4_filter"
           ]
         },
-        "chosung_analyzer": {
+        "chosung_index_analyzer": {
           "type": "custom",
           "char_filter": [
             "white_remove_char_filter",
@@ -131,7 +137,19 @@ curl -XPUT  $ELASTICSEARCH_HOST \
           "tokenizer": "keyword",
           "filter": [
             "lowercase",
-            "hanhinsam_chosung"
+            "hanhinsam_chosung",
+            "edge_ngram_front_filter"
+          ]
+        },
+        "chosung_search_analyzer": {
+          "type": "custom",
+          "char_filter": [
+            "white_remove_char_filter",
+            "special_character_filter"
+          ],
+          "tokenizer": "keyword",
+          "filter": [
+            "lowercase"
           ]
         },
         "hantoeng_analyzer": {
@@ -201,7 +219,8 @@ curl -XPUT  $ELASTICSEARCH_HOST \
       },
       "title_chosung": {
         "type": "text",
-        "analyzer": "chosung_analyzer"
+        "analyzer": "chosung_index_analyzer",
+        "search_analyzer": "chosung_search_analyzer"
       },
       "title_engtohan": {
         "type": "text",
