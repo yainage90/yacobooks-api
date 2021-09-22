@@ -8,6 +8,3 @@ server:
 
 elasticsearch:
   port: 9200
-  index:
-    book:
-      name: book
