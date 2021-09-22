@@ -3,6 +3,7 @@ package com.yaincoding.yacobooksapi.domain.book.controller;
 import com.yaincoding.yacobooksapi.domain.book.dto.AutoCompleteSuggestResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchRequestDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchResponseDto;
+import com.yaincoding.yacobooksapi.domain.book.dto.ChosungSuggestResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.entity.Book;
 import com.yaincoding.yacobooksapi.domain.book.exception.BookSearchException;
 import com.yaincoding.yacobooksapi.domain.book.service.BookService;
@@ -38,8 +39,15 @@ public class BookController {
 		return ResponseEntity.ok(bookService.autoComplete(query));
 	}
 
+	@GetMapping(value = "/chosung")
+	public ResponseEntity<ChosungSuggestResponseDto> chosungSuggest(String query) {
+		return ResponseEntity.ok(bookService.chosungSuggest(query));
+	}
+
 	@ExceptionHandler(BookSearchException.class)
 	public ResponseEntity<String> handleSearchException() {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("FAIL");
 	}
+
+
 }
