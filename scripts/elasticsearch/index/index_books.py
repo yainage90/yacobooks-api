@@ -65,8 +65,7 @@ if __name__ == "__main__":
   user = args.user
   password = args.password
 
-  #elasticsearch_host = 'http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:9200'
-  elasticsearch_host = 'http://localhost:9200'
+  elasticsearch_host = ':'.join(os.environ['ES_HOST'], os.environ['ES_PORT'])
   esClient = Elasticsearch(hosts=[elasticsearch_host], http_auth=(user, password), timeout=60)
 
   index(data_dir)
