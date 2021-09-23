@@ -28,7 +28,7 @@ public class BookSearchUtil {
 	public static SearchRequest createTitleSearchRequest(BookSearchRequestDto bookSearchRequestDto) {
 
 		String query = bookSearchRequestDto.getQuery();
-		int page = bookSearchRequestDto.getPage();
+		int page = Math.max(1, bookSearchRequestDto.getPage());
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		boolQueryBuilder.should().add(QueryBuilders.termQuery("title", query).boost(100.0f));
