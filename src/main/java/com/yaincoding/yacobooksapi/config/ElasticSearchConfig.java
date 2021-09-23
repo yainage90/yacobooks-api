@@ -10,7 +10,6 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import lombok.extern.slf4j.Slf4j;
@@ -18,16 +17,13 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @Slf4j
 public class ElasticSearchConfig {
-	@Value("${elasticsearch.host}")
-	private String ES_HOST;
-
-	@Value("${elasticsearch.port}")
-	private int ES_PORT;
 
 	@Bean
 	public RestHighLevelClient createRestHighLevelClient() throws IOException {
 
 		CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+		String ES_HOST = System.getenv("ES_HOST");
+		int ES_PORT = Integer.parseInt(System.getenv("ES_PORT"));
 		String ES_USER = System.getenv("ES_USER");
 		String ES_PASSWORD = System.getenv("ES_PASSWORD");
 		credentialsProvider.setCredentials(AuthScope.ANY,
