@@ -1,0 +1,19 @@
+version: "3.4"
+
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - 8080:8080
+    volumes:
+      - type: bind
+        source: $HOME/yacobooks_log
+        target: /yacobooks_log
+    env_file:
+      - es.env
+
+networks:
+  default:
+    external:
+      name: yaco_net
