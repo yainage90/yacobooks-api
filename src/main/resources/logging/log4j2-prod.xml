@@ -5,7 +5,7 @@
         <Property name="warnLogName">warn</Property>
         <Property name="errorLogName">error</Property>
         <Property name="layoutPattern">%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p [%t] %-17c{2} \(%13F:%L\) - %msg%n</Property>
-        <Property name="logDir">${sys:user.home}/yacobooks_log</Property>
+        <Property name="logDir">/yacobooks_log</Property>
     </Properties>
     <Appenders>
         <RollingFile name="infoFile" fileName="${logDir}/${infoLogName}.log" filePattern="${logDir}/${infoLogName}_%d{yyyy-MM-dd}_%i.log">
