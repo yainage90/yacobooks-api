@@ -2,6 +2,7 @@ version: '3.2'
 
 services:
   elasticsearch:
+    container_name: yacobooks_es
     build:
       context: elasticsearch/
       args:
@@ -27,11 +28,12 @@ services:
       - "9200:9200"
       - "9300:9300"
     environment:
-      ES_JAVA_OPTS: "-Xmx6g -Xms6g"
+      ES_JAVA_OPTS: "-Xmx4g -Xms4g"
       ELASTIC_PASSWORD: yain
       discovery.type: single-node
 
   kibana:
+    container_name: yacobooks_kibana
     build:
       context: kibana/
       args:
