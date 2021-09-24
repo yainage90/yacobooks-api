@@ -1,4 +1,5 @@
-from elasticsearch import Elasticsearch, helpers
+from elasticsearch import Elasticsearch
+from elasticsearch.helpers import streaming_bulk
 import argparse
 import os
 
@@ -10,24 +11,21 @@ def index(data_dir):
     print('reading {}'.format(fname))
     docs = list()
     fpath = os.path.join(data_dir, fname)
-    df = pd.read_csv(fpath, skip_blank_lines=True, quotechar= '"', error_bad_lines=False)
-    df.fillna('', inplace=True)
     count = 0
-    for idx, row in df.iterrows():
+    for chunk in pd.read_csv(fpath, skip_blank_lines=True, quotechar= '"', error_bad_lines=False, chunksize=100000):
       count += 1
-      if count % 10000 == 0:
-        print('readed {} lines'.format(count))
-      source = makeDoc(row)
-      if not source['isbn13']:
-        continue
-      doc = {'_id': source['isbn13'], '_index': 'book', '_source': source}
-      docs.append(doc)
-      if len(docs) >= 100:
-        helpers.bulk(esClient, docs)
-        docs.clear()
-    if len(docs) > 0:
-      helpers.bulk(esClient, docs)
+      chunk.fillna('', inplace=True)
+      for idx, row in chunk.iterrows():
+        source = makeDoc(row)
+        if not source['isbn13']:
+          continue
+        doc = {'_id': source['isbn13'], '_index': 'book', '_source': source}
+        docs.append(doc)
+      for success, info in streaming_bulk(client=esClient, actions=docs, raise_on_error=False, raise_on_exception=False, request_timeout=60, chunk_size=50, max_retries=3):
+        if not success:
+          print(info) 
       docs.clear()
+      print('processed {} lines'.format(count * 100000))
 
 
 def makeDoc(row):
@@ -65,7 +63,7 @@ if __name__ == "__main__":
   user = args.user
   password = args.password
 
-  elasticsearch_host = ':'.join(os.environ['ES_HOST'], os.environ['ES_PORT'])
-  esClient = Elasticsearch(hosts=[elasticsearch_host], http_auth=(user, password), timeout=60)
+  es_host= os.environ['ES_HOST'] + ":" + os.environ['ES_PORT']
+  esClient = Elasticsearch(hosts=[es_host], http_auth=(user, password), timeout=60)
 
   index(data_dir)
