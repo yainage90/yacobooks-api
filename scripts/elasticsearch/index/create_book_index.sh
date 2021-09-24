@@ -1,8 +1,8 @@
 #!/usr/bin/bash
 
-ELASTICSEARCH_HOST="$ES_HOST:$ES_PORT/book?pretty"
+ELASTICSEARCH_HOST=
 
-curl -XPUT  $ELASTICSEARCH_HOST \
+curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
 -u "${ES_USER}:${ES_PASSWORD}" \
 -H "Content-Type: application/json" \
 -d \
