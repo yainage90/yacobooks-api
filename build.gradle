@@ -46,6 +46,8 @@ test {
 	useJUnitPlatform()
 }
 
+compileJava.options.encoding = 'UTF-8'
+
 tasks.register('devRun') {
 	group = 'application'
 	doFirst {
