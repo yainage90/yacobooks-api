@@ -2,7 +2,7 @@ version: "3.4"
 
 services:
   app:
-    container_name: yacobooks_api
+    container_name: yacobooks-api
     build:
       context: .
     ports:
