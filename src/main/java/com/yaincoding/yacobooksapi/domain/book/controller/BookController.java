@@ -15,37 +15,44 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 
 @RestController
 @RequestMapping("/api/book")
 @RequiredArgsConstructor
+@Slf4j
 public class BookController {
 
 	private final BookService bookService;
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Book> getBook(@PathVariable String id) {
+		log.info("/api/book" + id);
 		return ResponseEntity.ok(bookService.getById(id));
 	}
 
 	@GetMapping(value = "/search")
 	public ResponseEntity<BookSearchResponseDto> search(BookSearchRequestDto bookSearchRequestDto) {
+		log.info("/api/book/search. bookSearchRequestDto=" + bookSearchRequestDto.toString());
 		return ResponseEntity.ok(bookService.search(bookSearchRequestDto));
 	}
 
 	@GetMapping(value = "/ac")
 	public ResponseEntity<AutoCompleteSuggestResponseDto> autoComplete(String query) {
+		log.info("/api/book/ac. query=" + query);
 		return ResponseEntity.ok(bookService.autoComplete(query));
 	}
 
 	@GetMapping(value = "/chosung")
 	public ResponseEntity<ChosungSuggestResponseDto> chosungSuggest(String query) {
+		log.info("/api/book/chosung. query=" + query);
 		return ResponseEntity.ok(bookService.chosungSuggest(query));
 	}
 
 	@ExceptionHandler(BookSearchException.class)
-	public ResponseEntity<String> handleSearchException() {
+	public ResponseEntity<String> handleSearchException(BookSearchException e) {
+		log.error(e.getMessage(), e);
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("FAIL");
 	}
 
