@@ -12,6 +12,7 @@ import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
@@ -32,7 +33,8 @@ public class BookSearchUtil {
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		boolQueryBuilder.should().add(QueryBuilders.termQuery("title", query).boost(100.0f));
-		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_text", query).boost(20.0f));
+		boolQueryBuilder.should()
+				.add(QueryBuilders.matchQuery("title_text", query).operator(Operator.AND).boost(20.0f));
 
 		SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
 		searchSourceBuilder.query(boolQueryBuilder);
