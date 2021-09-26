@@ -12,6 +12,7 @@ import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -47,35 +48,16 @@ public class BookSearchUtil {
 		return searchRequest;
 	}
 
-	public static SearchRequest createTitleSpellCorrectSearchRequest(
+	public static SearchRequest createTitleAuthorSearchRequest(
 			BookSearchRequestDto bookSearchRequestDto) {
 		String query = bookSearchRequestDto.getQuery();
 		int page = bookSearchRequestDto.getPage();
 
-		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_spell", query).boost(10.0f));
+		MultiMatchQueryBuilder multiMatchQueryBuilder =
+				QueryBuilders.multiMatchQuery(query, "title_text", "author_text").operator(Operator.AND);
 
 		SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
-		searchSourceBuilder.query(boolQueryBuilder);
-		searchSourceBuilder.from(COUNT_PER_PAGE * (page - 1));
-		searchSourceBuilder.size(COUNT_PER_PAGE);
-
-		SearchRequest searchRequest = new SearchRequest(BOOK_INDEX);
-		searchRequest.source(searchSourceBuilder);
-
-		return searchRequest;
-	}
-
-	public static SearchRequest createTitleNgramSearchRequest(
-			BookSearchRequestDto bookSearchRequestDto) {
-		String query = bookSearchRequestDto.getQuery();
-		int page = bookSearchRequestDto.getPage();
-
-		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_ngram", query).boost(2.0f));
-		boolQueryBuilder.should().add(QueryBuilders.matchQuery("author_text", query).boost(1.0f));
-		SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
-		searchSourceBuilder.query(boolQueryBuilder);
+		searchSourceBuilder.query(multiMatchQueryBuilder);
 		searchSourceBuilder.from(COUNT_PER_PAGE * (page - 1));
 		searchSourceBuilder.size(COUNT_PER_PAGE);
 

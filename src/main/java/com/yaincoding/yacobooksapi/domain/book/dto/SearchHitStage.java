@@ -2,8 +2,7 @@ package com.yaincoding.yacobooksapi.domain.book.dto;
 
 public enum SearchHitStage {
 
-	TITLE_SEARCH("title_search"), SPELL_CORRECT_SEARCH("title_spell_correct_search"), NGRAM_SEARCH(
-			"title_ngram_search");
+	TITLE_SEARCH("title_search"), TITLE_AUTHOR_SEARCH("title_author_search");
 
 	protected final String STAGE;
 

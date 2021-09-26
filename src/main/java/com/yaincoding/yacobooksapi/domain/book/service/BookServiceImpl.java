@@ -75,31 +75,13 @@ public class BookServiceImpl implements BookService {
 
 		try {
 			SearchRequest searchRequest =
-					BookSearchUtil.createTitleSpellCorrectSearchRequest(bookSearchRequestDto);
-			SearchResponse response = esClient.search(searchRequest, RequestOptions.DEFAULT);
-			if (response.getHits().getTotalHits().value > 0) {
-				BookSearchResponseDto responseDto = BookSearchUtil.createBookSearchResponseDto(response,
-						SearchHitStage.SPELL_CORRECT_SEARCH.getStage());
-
-				log.debug(responseDto.toString());
-
-				return responseDto;
-			}
-		} catch (IOException e) {
-			log.error(
-					"query=" + bookSearchRequestDto.getQuery() + ", page=" + bookSearchRequestDto.getPage(),
-					e);
-
-			throw new BookSearchException("엘라스틱서치 Search API 호출 에러");
-		}
-
-		try {
-			SearchRequest searchRequest =
-					BookSearchUtil.createTitleNgramSearchRequest(bookSearchRequestDto);
+					BookSearchUtil.createTitleAuthorSearchRequest(bookSearchRequestDto);
 			SearchResponse response = esClient.search(searchRequest, RequestOptions.DEFAULT);
 			BookSearchResponseDto responseDto = BookSearchUtil.createBookSearchResponseDto(response,
-					SearchHitStage.NGRAM_SEARCH.getStage());
+					SearchHitStage.TITLE_SEARCH.getStage());
+
 			log.debug(responseDto.toString());
+
 			return responseDto;
 		} catch (IOException e) {
 			log.error(
