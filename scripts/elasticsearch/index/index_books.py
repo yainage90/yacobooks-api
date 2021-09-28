@@ -17,7 +17,7 @@ def index(data_dir):
       chunk.fillna('', inplace=True)
       for idx, row in chunk.iterrows():
         source = makeDoc(row)
-        if not source['isbn13']:
+        if not (source['isbn13'] and source['title'] and source['author'] and source['publisher']):
           continue
         doc = {'_id': source['isbn13'], '_index': 'book', '_source': source}
         docs.append(doc)
@@ -29,6 +29,7 @@ def index(data_dir):
 
 
 def makeDoc(row):
+  isbn10 = row['isbn10']
   isbn13 = row['isbn13']
   title = row['title']
   author = row['author']
@@ -38,6 +39,7 @@ def makeDoc(row):
   description = row['description']
 
   source = {
+    'isbn10': isbn10,
     'isbn13': isbn13,
     'title': title,
     'author': author,
