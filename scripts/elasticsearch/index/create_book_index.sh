@@ -1,7 +1,5 @@
 #!/usr/bin/bash
 
-ELASTICSEARCH_HOST=
-
 curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
 -u "${ES_USER}:${ES_PASSWORD}" \
 -H "Content-Type: application/json" \
@@ -114,7 +112,7 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
             "hanhinsam_jamo"
           ]
         },
-        "ac_analyzer": {
+        "ac_index_analyzer": {
           "type": "custom",
           "char_filter": [
             "white_remove_char_filter",
@@ -125,6 +123,18 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
             "lowercase",
             "hanhinsam_jamo",
             "ngram4_filter"
+          ]
+        },
+        "ac_search_analyzer": {
+          "type": "custom",
+          "char_filter": [
+            "white_remove_char_filter",
+            "special_character_filter"
+          ],
+          "tokenizer": "keyword",
+          "filter": [
+            "lowercase",
+            "hanhinsam_jamo",
           ]
         },
         "chosung_index_analyzer": {
@@ -214,7 +224,8 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
       },
       "title_ac": {
         "type": "text",
-        "analyzer": "ac_analyzer"
+        "analyzer": "ac_analyzer",
+        "search_analyzer": "ac_search_analyzer"
       },
       "title_chosung": {
         "type": "text",
