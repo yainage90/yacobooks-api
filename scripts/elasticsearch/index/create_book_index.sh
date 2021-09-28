@@ -110,7 +110,7 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
           "tokenizer": "keyword",
           "filter": [
             "lowercase",
-            "hanhinsam_jamo",
+            "hanhinsam_jamo"
           ]
         },
         "chosung_index_analyzer": {
@@ -192,7 +192,7 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
       },
       "title_ac": {
         "type": "text",
-        "analyzer": "ac_analyzer",
+        "analyzer": "ac_index_analyzer",
         "search_analyzer": "ac_search_analyzer"
       },
       "title_chosung": {
