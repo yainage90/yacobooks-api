@@ -29,7 +29,6 @@ def index(data_dir):
 
 
 def makeDoc(row):
-  isbn10 = row['isbn10']
   isbn13 = row['isbn13']
   title = row['title']
   author = row['author']
@@ -39,7 +38,6 @@ def makeDoc(row):
   description = row['description']
 
   source = {
-    'isbn10': isbn10,
     'isbn13': isbn13,
     'title': title,
     'author': author,
