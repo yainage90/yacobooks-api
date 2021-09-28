@@ -88,30 +88,6 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
 						"nori_readingform"
           ]
         },
-        "title_ngram_analyzer": {
-          "type": "custom",
-          "char_filter": [
-            "white_remove_char_filter",
-            "special_character_filter"
-          ],
-          "tokenizer": "standard",
-          "filter": [
-            "lowercase",
-            "ngram2_filter"
-          ]
-        },
-        "title_spell_analyzer": {
-          "type": "custom",
-          "char_filter": [
-            "white_remove_char_filter",
-            "special_character_filter"
-          ],
-          "tokenizer": "keyword",
-          "filter": [
-            "lowercase",
-            "hanhinsam_jamo"
-          ]
-        },
         "ac_index_analyzer": {
           "type": "custom",
           "char_filter": [
@@ -208,19 +184,11 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
       },
       "title": {
         "type": "keyword",
-        "copy_to": ["title_text", "title_ngram", "title_spell", "title_ac", "title_chosung", "title_engtohan", "title_hantoeng"]
+        "copy_to": ["title_text", "title_ac", "title_chosung", "title_engtohan", "title_hantoeng"]
       },
       "title_text": {
         "type": "text",
         "analyzer": "title_nori_analyzer"
-      },
-      "title_ngram": {
-        "type": "text",
-        "analyzer": "title_ngram_analyzer"
-      },
-      "title_spell": {
-        "type": "text",
-        "analyzer": "title_spell_analyzer"
       },
       "title_ac": {
         "type": "text",
