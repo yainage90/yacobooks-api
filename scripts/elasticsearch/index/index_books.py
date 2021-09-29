@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from elasticsearch import Elasticsearch
 from elasticsearch.helpers import streaming_bulk
 import argparse
@@ -23,7 +25,11 @@ def index(data_dir):
         docs.append(doc)
       for success, info in streaming_bulk(client=esClient, actions=docs, raise_on_error=False, raise_on_exception=False, request_timeout=60, chunk_size=50, max_retries=3):
         if not success:
-          print(info) 
+            try:
+              print(info) 
+            except UnicodeEncodeError as e:
+              print(e)
+
       docs.clear()
       print('processed {} lines'.format(count * 100000))
 
