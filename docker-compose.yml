@@ -12,7 +12,7 @@ services:
         source: $HOME/yacobooks_log
         target: /yacobooks_log
     env_file:
-      - es.prod.env
+      - .env.prod
 
 networks:
   default:
