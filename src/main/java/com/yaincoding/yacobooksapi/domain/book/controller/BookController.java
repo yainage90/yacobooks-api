@@ -7,6 +7,7 @@ import com.yaincoding.yacobooksapi.domain.book.dto.ChosungSuggestResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.entity.Book;
 import com.yaincoding.yacobooksapi.domain.book.exception.BookSearchException;
 import com.yaincoding.yacobooksapi.domain.book.service.BookService;
+import com.yaincoding.yacobooksapi.slack.SlackLogBot;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -53,6 +54,7 @@ public class BookController {
 	@ExceptionHandler(BookSearchException.class)
 	public ResponseEntity<String> handleSearchException(BookSearchException e) {
 		log.error(e.getMessage(), e);
+		SlackLogBot.sendError(e);
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("FAIL");
 	}
 

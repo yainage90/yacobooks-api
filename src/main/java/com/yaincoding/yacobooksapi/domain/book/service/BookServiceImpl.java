@@ -9,6 +9,7 @@ import com.yaincoding.yacobooksapi.domain.book.dto.ChosungSuggestResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.SearchHitStage;
 import com.yaincoding.yacobooksapi.domain.book.entity.Book;
 import com.yaincoding.yacobooksapi.domain.book.exception.BookSearchException;
+import com.yaincoding.yacobooksapi.slack.SlackLogBot;
 import com.yaincoding.yacobooksapi.util.BookSearchUtil;
 import com.yaincoding.yacobooksapi.util.HangulUtil;
 import org.elasticsearch.action.get.GetResponse;
@@ -39,6 +40,7 @@ public class BookServiceImpl implements BookService {
 			response = esClient.get(BookSearchUtil.createGetByIdRequest(id), RequestOptions.DEFAULT);
 		} catch (IOException e) {
 			log.error("IOException occured.");
+			SlackLogBot.sendError(e);
 			throw new BookSearchException("엘라스틱서치 GET API 호출 에러");
 		}
 
@@ -70,6 +72,7 @@ public class BookServiceImpl implements BookService {
 			log.error(
 					"query=" + bookSearchRequestDto.getQuery() + ", page=" + bookSearchRequestDto.getPage(),
 					e);
+			SlackLogBot.sendError(e);
 			throw new BookSearchException("엘라스틱서치 Search API 호출 에러");
 		}
 
@@ -87,6 +90,7 @@ public class BookServiceImpl implements BookService {
 			log.error(
 					"query=" + bookSearchRequestDto.getQuery() + ", page=" + bookSearchRequestDto.getPage(),
 					e);
+			SlackLogBot.sendError(e);
 			throw new BookSearchException("엘라스틱서치 Search API 호출 에러");
 		}
 	}
@@ -99,6 +103,7 @@ public class BookServiceImpl implements BookService {
 			return BookSearchUtil.createAutoCompleteSuggestResponseDto(response);
 		} catch (IOException e) {
 			log.error("query=" + query, e);
+			SlackLogBot.sendError(e);
 			throw new BookSearchException("엘라스틱서치 Search API 호출 에러");
 		}
 	}
@@ -112,6 +117,7 @@ public class BookServiceImpl implements BookService {
 			return BookSearchUtil.createChosungSuggestResponseDto(response);
 		} catch (IOException e) {
 			log.error("query=" + query, e);
+			SlackLogBot.sendError(e);
 			throw new BookSearchException("엘라스틱서치 Search API 호출 에러");
 		}
 	}
