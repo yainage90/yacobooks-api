@@ -11,11 +11,14 @@ curl -XPUT  $ELASTICSEARCH_HOST \
   "name": "<book-snapshot-{now/m{yyyyMMddHHmm|+09:00}}>",
   "repository": "book_backup",
   "config": {
-    "indices": ["book"]
+    "indices": ["book"],
+    "ignore_unavailable": true,
+    "include_global_state": false,
+    "compress": true
   },
   "retention": {
     "expire_after": "10d",
-    "min_count": 5,
-    "max_count": 10
+    "min_count": 2,
+    "max_count": 4 
   }
 }'
