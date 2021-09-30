@@ -10,7 +10,7 @@ curl -X PUT  $ELASTICSEARCH_HOST \
   "type": "gcs",
   "settings": {
     "bucket": "yacobooks_snapshot",
-    "client": "yacobooks",
+    "client": "default",
     "base_path": "book"
   }
 }'
