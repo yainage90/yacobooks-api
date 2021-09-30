@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 
-ELASTICSEARCH_HOST="http://localhost:9200/_snapshot/book_backup/book_backup_${date +%Y%m%d%H%M%S -d '+9 hour'}?wait_for_completion=true"
+CURRENT=$(date +%Y%m%d%H%M%S -d '+9 hour')
+ELASTICSEARCH_HOST="http://localhost:9200/_snapshot/book_backup/book_backup_$CURRENT?wait_for_completion=true"
 
 curl -XPUT  $ELASTICSEARCH_HOST \
 -u "${ES_USER}:${ES_PASSWORD}" \
