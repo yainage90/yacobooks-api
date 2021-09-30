@@ -2,14 +2,15 @@
 
 ELASTICSEARCH_HOST="http://localhost:9200/_snapshot/book_backup?pretty"
 
-curl -XPUT  $ELASTICSEARCH_HOST \
+curl -X PUT  $ELASTICSEARCH_HOST \
 -u "${ES_USER}:${ES_PASSWORD}" \
 -H "Content-Type: application/json" \
 -d \
 '{
-	"type": "fs",
+  "type": "gcs",
   "settings": {
-    "compress": true,
-    "location": "/repo/book"
+    "bucket": "yacobooks_snapshot",
+    "client": "yacobooks",
+    "base_path": "book"
   }
 }'
