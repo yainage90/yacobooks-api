@@ -3,6 +3,7 @@ ARG ELK_VERSION
 FROM docker.elastic.co/elasticsearch/elasticsearch:${ELK_VERSION}
 
 COPY plugins/hanhinsam-0.1.zip /plugins/hanhinsam.zip
+COPY keystore/yacobooks-f07bce3fbba5.json /keystore/gcs_account_file.json
 
 RUN elasticsearch-plugin install analysis-nori
 RUN elasticsearch-plugin install file:///plugins/hanhinsam.zip
