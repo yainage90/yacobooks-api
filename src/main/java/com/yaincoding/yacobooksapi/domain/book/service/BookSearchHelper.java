@@ -12,7 +12,6 @@ import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -50,16 +49,19 @@ public class BookSearchHelper {
 		return searchRequest;
 	}
 
-	public SearchRequest createTitleAuthorSearchRequest(
-			BookSearchRequestDto bookSearchRequestDto) {
+	public SearchRequest createTitleAuthorSearchRequest(BookSearchRequestDto bookSearchRequestDto) {
 		String query = bookSearchRequestDto.getQuery();
 		int page = bookSearchRequestDto.getPage();
 
-		MultiMatchQueryBuilder multiMatchQueryBuilder =
-				QueryBuilders.multiMatchQuery(query, "title_text", "author_text").operator(Operator.AND);
+		// MultiMatchQueryBuilder multiMatchQueryBuilder =
+		// QueryBuilders.multiMatchQuery(query, "title_text", "author_text").operator(Operator.AND);
+
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_text", query));
+		boolQueryBuilder.should().add(QueryBuilders.matchQuery("author_text", query).boost(10.0f));
 
 		SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
-		searchSourceBuilder.query(multiMatchQueryBuilder);
+		searchSourceBuilder.query(boolQueryBuilder);
 		searchSourceBuilder.from(COUNT_PER_PAGE * (page - 1));
 		searchSourceBuilder.size(COUNT_PER_PAGE);
 
@@ -98,8 +100,7 @@ public class BookSearchHelper {
 		return searchRequest;
 	}
 
-	public BookSearchResponseDto createBookSearchResponseDto(SearchResponse response,
-			String stage) {
+	public BookSearchResponseDto createBookSearchResponseDto(SearchResponse response, String stage) {
 		BookSearchResponseDto responseDto = new BookSearchResponseDto();
 		responseDto.setResult("OK");
 		responseDto.setSearchHitStage(stage);
