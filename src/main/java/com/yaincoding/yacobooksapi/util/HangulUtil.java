@@ -5,6 +5,9 @@ import java.util.Map;
 
 public class HangulUtil {
 
+	// prevent instantiate
+	private HangulUtil() {}
+
 	private static final Map<Character, String> layeredJaumMap = new HashMap<>() {
 		{
 			put('ㄳ', "ㄱㅅ");
