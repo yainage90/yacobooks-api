@@ -42,6 +42,8 @@ public class BookSearchHelper {
 		searchSourceBuilder.query(boolQueryBuilder);
 		searchSourceBuilder.from(COUNT_PER_PAGE * (page - 1));
 		searchSourceBuilder.size(COUNT_PER_PAGE);
+		String[] includes = {"isbn13", "title", "author", "publisher", "pubDate", "imageUrl"};
+		searchSourceBuilder.fetchSource(includes, null);
 
 		SearchRequest searchRequest = new SearchRequest(BOOK_INDEX);
 		searchRequest.source(searchSourceBuilder);
@@ -64,6 +66,8 @@ public class BookSearchHelper {
 		searchSourceBuilder.query(boolQueryBuilder);
 		searchSourceBuilder.from(COUNT_PER_PAGE * (page - 1));
 		searchSourceBuilder.size(COUNT_PER_PAGE);
+		String[] includes = {"isbn13", "title", "author", "publisher", "pubDate", "imageUrl"};
+		searchSourceBuilder.fetchSource(includes, null);
 
 		SearchRequest searchRequest = new SearchRequest(BOOK_INDEX);
 		searchRequest.source(searchSourceBuilder);
@@ -79,6 +83,8 @@ public class BookSearchHelper {
 		searchSourceBuilder.query(boolQueryBuilder);
 		searchSourceBuilder.from(0);
 		searchSourceBuilder.size(AUTO_COMPLETE_LIMIT);
+		String[] includes = {"title"};
+		searchSourceBuilder.fetchSource(includes, null);
 
 		SearchRequest searchRequest = new SearchRequest(BOOK_INDEX);
 		searchRequest.source(searchSourceBuilder);
@@ -93,6 +99,8 @@ public class BookSearchHelper {
 		searchSourceBuilder.query(boolQueryBuilder);
 		searchSourceBuilder.from(0);
 		searchSourceBuilder.size(AUTO_COMPLETE_LIMIT);
+		String[] includes = {"title"};
+		searchSourceBuilder.fetchSource(includes, null);
 
 		SearchRequest searchRequest = new SearchRequest(BOOK_INDEX);
 		searchRequest.source(searchSourceBuilder);
