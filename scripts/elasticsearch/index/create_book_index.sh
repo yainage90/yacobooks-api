@@ -219,7 +219,7 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
         "analyzer": "author_index_analyzer",
         "search_analyzer": "standard"
       },
-      "publichser": {
+      "publisher": {
         "type": "keyword"
       },
       "pubDate": {
