@@ -2,7 +2,6 @@ package com.yaincoding.yacobooksapi.slack;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -13,8 +12,6 @@ public class SlackLogBot {
 
 	private static final String SLACK_WEBHOOK_URL = System.getenv("SLACK_WEBHOOK_URL");
 
-	private static final Gson gson = new Gson();
-
 	public static void sendError(Throwable error) {
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 
@@ -23,7 +20,7 @@ public class SlackLogBot {
 
 		JsonObject body = new JsonObject();
 		body.addProperty("text", error.getMessage());
-		String bodyString = gson.toJson(body);
+		String bodyString = body.toString();
 		StringEntity entity = new StringEntity(bodyString, StandardCharsets.UTF_8);
 
 		httpPost.setEntity(entity);
@@ -42,7 +39,7 @@ public class SlackLogBot {
 
 		JsonObject body = new JsonObject();
 		body.addProperty("text", msg);
-		String bodyString = gson.toJson(body);
+		String bodyString = body.toString();
 		StringEntity entity = new StringEntity(bodyString, StandardCharsets.UTF_8);
 
 		httpPost.setEntity(entity);
