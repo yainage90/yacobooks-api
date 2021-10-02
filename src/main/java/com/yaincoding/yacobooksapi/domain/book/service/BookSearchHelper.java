@@ -67,7 +67,8 @@ public class BookSearchHelper {
 		searchSourceBuilder.query(boolQueryBuilder);
 		searchSourceBuilder.from(COUNT_PER_PAGE * (page - 1));
 		searchSourceBuilder.size(COUNT_PER_PAGE);
-		String[] includes = {"isbn13", "title", "author", "publisher", "pubDate", "imageUrl"};
+		String[] includes =
+				{"isbn13", "title", "author", "publisher", "pubDate", "imageUrl", "description"};
 		searchSourceBuilder.fetchSource(includes, null);
 
 		SearchRequest searchRequest = new SearchRequest(BOOK_INDEX);
