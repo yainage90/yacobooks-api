@@ -1,4 +1,4 @@
-package com.yaincoding.yacobooksapi.util;
+package com.yaincoding.yacobooksapi.domain.book.service;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -16,18 +16,20 @@ import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.springframework.stereotype.Component;
 
-public class BookSearchUtil {
+@Component
+public class BookSearchHelper {
 
 	private static final String BOOK_INDEX = "book";
 	private static final int COUNT_PER_PAGE = 10;
 	private static final int AUTO_COMPLETE_LIMIT = 10;
 
-	public static GetRequest createGetByIdRequest(String id) {
+	public GetRequest createGetByIdRequest(String id) {
 		return new GetRequest(BOOK_INDEX, id);
 	}
 
-	public static SearchRequest createTitleSearchRequest(BookSearchRequestDto bookSearchRequestDto) {
+	public SearchRequest createTitleSearchRequest(BookSearchRequestDto bookSearchRequestDto) {
 
 		String query = bookSearchRequestDto.getQuery();
 		int page = Math.max(1, bookSearchRequestDto.getPage());
@@ -48,7 +50,7 @@ public class BookSearchUtil {
 		return searchRequest;
 	}
 
-	public static SearchRequest createTitleAuthorSearchRequest(
+	public SearchRequest createTitleAuthorSearchRequest(
 			BookSearchRequestDto bookSearchRequestDto) {
 		String query = bookSearchRequestDto.getQuery();
 		int page = bookSearchRequestDto.getPage();
@@ -67,7 +69,7 @@ public class BookSearchUtil {
 		return searchRequest;
 	}
 
-	public static SearchRequest createAutoCompleteSearchRequest(String query) {
+	public SearchRequest createAutoCompleteSearchRequest(String query) {
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_ac", query));
@@ -82,7 +84,7 @@ public class BookSearchUtil {
 		return searchRequest;
 	}
 
-	public static SearchRequest createChosungSearchRequest(String query) {
+	public SearchRequest createChosungSearchRequest(String query) {
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_chosung", query));
 		SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
@@ -96,7 +98,7 @@ public class BookSearchUtil {
 		return searchRequest;
 	}
 
-	public static BookSearchResponseDto createBookSearchResponseDto(SearchResponse response,
+	public BookSearchResponseDto createBookSearchResponseDto(SearchResponse response,
 			String stage) {
 		BookSearchResponseDto responseDto = new BookSearchResponseDto();
 		responseDto.setResult("OK");
@@ -109,7 +111,7 @@ public class BookSearchUtil {
 		return responseDto;
 	}
 
-	public static AutoCompleteSuggestResponseDto createAutoCompleteSuggestResponseDto(
+	public AutoCompleteSuggestResponseDto createAutoCompleteSuggestResponseDto(
 			SearchResponse response) {
 
 		AutoCompleteSuggestResponseDto responseDto = new AutoCompleteSuggestResponseDto();
@@ -121,7 +123,7 @@ public class BookSearchUtil {
 		return responseDto;
 	}
 
-	public static ChosungSuggestResponseDto createChosungSuggestResponseDto(SearchResponse response) {
+	public ChosungSuggestResponseDto createChosungSuggestResponseDto(SearchResponse response) {
 
 		ChosungSuggestResponseDto responseDto = new ChosungSuggestResponseDto();
 		responseDto.setResult("OK");
