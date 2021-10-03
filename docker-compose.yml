@@ -5,23 +5,14 @@ services:
     container_name: yacobooks-api
     build:
       context: .
-    expose:
-      - 8080
+    ports:
+      - 8080:8080
     volumes:
       - type: bind
         source: $HOME/yacobooks_log
         target: /yacobooks_log
     env_file:
       - .env.prod
-  nginx:
-    container_name: nginx
-    build:
-      context: ./nginx
-    ports:
-      - "8080:8080"
-    depends_on:
-      - app
-
 
 networks:
   default:
