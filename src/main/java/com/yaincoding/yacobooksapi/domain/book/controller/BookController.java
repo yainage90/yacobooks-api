@@ -1,9 +1,8 @@
 package com.yaincoding.yacobooksapi.domain.book.controller;
 
-import com.yaincoding.yacobooksapi.domain.book.dto.AutoCompleteSuggestResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchRequestDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchResponseDto;
-import com.yaincoding.yacobooksapi.domain.book.dto.ChosungSuggestResponseDto;
+import com.yaincoding.yacobooksapi.domain.book.dto.SuggestResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.entity.Book;
 import com.yaincoding.yacobooksapi.domain.book.exception.BookSearchException;
 import com.yaincoding.yacobooksapi.domain.book.service.BookService;
@@ -40,13 +39,13 @@ public class BookController {
 	}
 
 	@GetMapping(value = "/ac")
-	public ResponseEntity<AutoCompleteSuggestResponseDto> autoComplete(String query) {
+	public ResponseEntity<SuggestResponseDto> autoComplete(String query) {
 		log.info("/api/book/ac. query=" + query);
 		return ResponseEntity.ok(bookService.autoComplete(query));
 	}
 
 	@GetMapping(value = "/chosung")
-	public ResponseEntity<ChosungSuggestResponseDto> chosungSuggest(String query) {
+	public ResponseEntity<SuggestResponseDto> chosungSuggest(String query) {
 		log.info("/api/book/chosung. query=" + query);
 		return ResponseEntity.ok(bookService.chosungSuggest(query));
 	}

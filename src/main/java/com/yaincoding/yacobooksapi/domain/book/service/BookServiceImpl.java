@@ -2,11 +2,10 @@ package com.yaincoding.yacobooksapi.domain.book.service;
 
 import java.io.IOException;
 import com.google.gson.Gson;
-import com.yaincoding.yacobooksapi.domain.book.dto.AutoCompleteSuggestResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchRequestDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchResponseDto;
-import com.yaincoding.yacobooksapi.domain.book.dto.ChosungSuggestResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.SearchHitStage;
+import com.yaincoding.yacobooksapi.domain.book.dto.SuggestResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.entity.Book;
 import com.yaincoding.yacobooksapi.domain.book.exception.BookSearchException;
 import com.yaincoding.yacobooksapi.slack.SlackLogBot;
@@ -92,7 +91,7 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public AutoCompleteSuggestResponseDto autoComplete(String query) throws BookSearchException {
+	public SuggestResponseDto autoComplete(String query) throws BookSearchException {
 		SearchRequest searchRequest = bookSearchHelper.createAutoCompleteSearchRequest(query);
 		try {
 			SearchResponse response = esClient.search(searchRequest, RequestOptions.DEFAULT);
@@ -105,7 +104,7 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public ChosungSuggestResponseDto chosungSuggest(String query) throws BookSearchException {
+	public SuggestResponseDto chosungSuggest(String query) throws BookSearchException {
 		query = HangulUtil.decomposeLayeredJaum(query);
 		SearchRequest searchRequest = bookSearchHelper.createChosungSearchRequest(query);
 		try {

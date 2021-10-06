@@ -3,10 +3,9 @@ package com.yaincoding.yacobooksapi.domain.book.service;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import com.google.gson.Gson;
-import com.yaincoding.yacobooksapi.domain.book.dto.AutoCompleteSuggestResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchRequestDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchResponseDto;
-import com.yaincoding.yacobooksapi.domain.book.dto.ChosungSuggestResponseDto;
+import com.yaincoding.yacobooksapi.domain.book.dto.SuggestResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.entity.Book;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.search.SearchRequest;
@@ -122,10 +121,9 @@ public class BookSearchHelper {
 		return responseDto;
 	}
 
-	public AutoCompleteSuggestResponseDto createAutoCompleteSuggestResponseDto(
-			SearchResponse response) {
+	public SuggestResponseDto createAutoCompleteSuggestResponseDto(SearchResponse response) {
 
-		AutoCompleteSuggestResponseDto responseDto = new AutoCompleteSuggestResponseDto();
+		SuggestResponseDto responseDto = new SuggestResponseDto();
 		responseDto.setResult("OK");
 		responseDto.setTitles(Arrays.stream(response.getHits().getHits())
 				.map(hit -> hit.getSourceAsMap().get((String) "title").toString())
@@ -134,9 +132,9 @@ public class BookSearchHelper {
 		return responseDto;
 	}
 
-	public ChosungSuggestResponseDto createChosungSuggestResponseDto(SearchResponse response) {
+	public SuggestResponseDto createChosungSuggestResponseDto(SearchResponse response) {
 
-		ChosungSuggestResponseDto responseDto = new ChosungSuggestResponseDto();
+		SuggestResponseDto responseDto = new SuggestResponseDto();
 		responseDto.setResult("OK");
 		responseDto.setTitles(Arrays.stream(response.getHits().getHits())
 				.map(hit -> hit.getSourceAsMap().get((String) "title").toString())

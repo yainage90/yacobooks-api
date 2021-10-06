@@ -8,11 +8,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Collections;
 import java.util.UUID;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yaincoding.yacobooksapi.domain.book.dto.AutoCompleteSuggestResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchRequestDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchResponseDto;
-import com.yaincoding.yacobooksapi.domain.book.dto.ChosungSuggestResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.SearchHitStage;
+import com.yaincoding.yacobooksapi.domain.book.dto.SuggestResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.entity.Book;
 import com.yaincoding.yacobooksapi.domain.book.service.BookService;
 import org.junit.jupiter.api.BeforeEach;
@@ -90,7 +89,7 @@ public class BookControllerTest {
 	@Test
 	void testAutoComplete() throws Exception {
 
-		AutoCompleteSuggestResponseDto responseDto = new AutoCompleteSuggestResponseDto();
+		SuggestResponseDto responseDto = new SuggestResponseDto();
 		responseDto.setResult("OK");
 		responseDto.setTitles(Collections.singletonList("title"));
 
@@ -106,7 +105,7 @@ public class BookControllerTest {
 
 	@Test
 	void testChosungSuggest() throws Exception {
-		ChosungSuggestResponseDto responseDto = new ChosungSuggestResponseDto();
+		SuggestResponseDto responseDto = new SuggestResponseDto();
 		responseDto.setResult("OK");
 		responseDto.setTitles(Collections.singletonList("title"));
 
