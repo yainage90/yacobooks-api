@@ -17,7 +17,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BookSearchHelper {
+final class BookSearchHelper {
 
 	private static final String BOOK_INDEX = "book";
 	private static final int COUNT_PER_PAGE = 10;
@@ -27,7 +27,7 @@ public class BookSearchHelper {
 		return new GetRequest(BOOK_INDEX, id);
 	}
 
-	public SearchRequest createTitleSearchRequest(BookSearchRequestDto bookSearchRequestDto) {
+	SearchRequest createTitleSearchRequest(BookSearchRequestDto bookSearchRequestDto) {
 
 		String query = bookSearchRequestDto.getQuery();
 		int page = Math.max(1, bookSearchRequestDto.getPage());
@@ -51,7 +51,7 @@ public class BookSearchHelper {
 		return searchRequest;
 	}
 
-	public SearchRequest createTitleAuthorSearchRequest(BookSearchRequestDto bookSearchRequestDto) {
+	SearchRequest createTitleAuthorSearchRequest(BookSearchRequestDto bookSearchRequestDto) {
 		String query = bookSearchRequestDto.getQuery();
 		int page = bookSearchRequestDto.getPage();
 
@@ -76,7 +76,7 @@ public class BookSearchHelper {
 		return searchRequest;
 	}
 
-	public SearchRequest createAutoCompleteSearchRequest(String query) {
+	SearchRequest createAutoCompleteSearchRequest(String query) {
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_ac", query));
@@ -93,7 +93,7 @@ public class BookSearchHelper {
 		return searchRequest;
 	}
 
-	public SearchRequest createChosungSearchRequest(String query) {
+	SearchRequest createChosungSearchRequest(String query) {
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_chosung", query));
 		SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
@@ -109,7 +109,7 @@ public class BookSearchHelper {
 		return searchRequest;
 	}
 
-	public BookSearchResponseDto createBookSearchResponseDto(SearchResponse response, String stage) {
+	BookSearchResponseDto createBookSearchResponseDto(SearchResponse response, String stage) {
 		BookSearchResponseDto responseDto = new BookSearchResponseDto();
 		responseDto.setResult("OK");
 		responseDto.setSearchHitStage(stage);
@@ -121,7 +121,7 @@ public class BookSearchHelper {
 		return responseDto;
 	}
 
-	public SuggestResponseDto createAutoCompleteSuggestResponseDto(SearchResponse response) {
+	SuggestResponseDto createAutoCompleteSuggestResponseDto(SearchResponse response) {
 
 		SuggestResponseDto responseDto = new SuggestResponseDto();
 		responseDto.setResult("OK");
@@ -132,7 +132,7 @@ public class BookSearchHelper {
 		return responseDto;
 	}
 
-	public SuggestResponseDto createChosungSuggestResponseDto(SearchResponse response) {
+	SuggestResponseDto createChosungSuggestResponseDto(SearchResponse response) {
 
 		SuggestResponseDto responseDto = new SuggestResponseDto();
 		responseDto.setResult("OK");
