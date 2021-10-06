@@ -35,8 +35,13 @@ public class ElasticSearchConfig {
 				});
 
 		RestHighLevelClient esClient = new RestHighLevelClient(builder);
-		if (esClient.ping(RequestOptions.DEFAULT)) {
-			log.info("Successfully connected to elasticsearch cluster");
+		try {
+			if (esClient.ping(RequestOptions.DEFAULT)) {
+				log.info("Successfully connected to elasticsearch cluster");
+			}
+		} catch (IOException e) {
+			log.error("Ping to elasticsearch cluster failed.");
+			throw new IOException("Ping to elasticsearch cluster failed.", e);
 		}
 
 		return esClient;
