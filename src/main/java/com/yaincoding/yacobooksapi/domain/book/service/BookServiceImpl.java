@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class BookServiceImpl implements BookService {
+public final class BookServiceImpl implements BookService {
 
 	private final RestHighLevelClient esClient;
 	private final BookSearchHelper bookSearchHelper;
