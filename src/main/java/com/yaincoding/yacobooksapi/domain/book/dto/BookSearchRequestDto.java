@@ -1,4 +1,4 @@
-package com.yaincoding.yacobooksapi.domain.book.search.dto;
+package com.yaincoding.yacobooksapi.domain.book.dto;
 
 import lombok.Getter;
 import lombok.Setter;

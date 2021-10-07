@@ -1,4 +1,4 @@
-package com.yaincoding.yacobooksapi.domain.book.search.exception;
+package com.yaincoding.yacobooksapi.domain.book.exception;
 
 public class BookSearchException extends RuntimeException {
 
