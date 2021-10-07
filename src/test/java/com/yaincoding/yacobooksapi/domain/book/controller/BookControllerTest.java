@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Collections;
 import java.util.UUID;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yaincoding.yacobooksapi.domain.book.controller.BookController;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchRequestDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.SearchHitStage;
