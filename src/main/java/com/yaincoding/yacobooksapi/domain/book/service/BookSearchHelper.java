@@ -11,6 +11,7 @@ import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -109,6 +110,36 @@ final class BookSearchHelper {
 		return searchRequest;
 	}
 
+	SearchRequest createHanToEngSearchRequest(String query) {
+		MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("title_engtohan", query);
+		SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
+		searchSourceBuilder.query(matchQueryBuilder);
+		searchSourceBuilder.from(0);
+		searchSourceBuilder.size(AUTO_COMPLETE_LIMIT);
+		String[] includes = {"title"};
+		searchSourceBuilder.fetchSource(includes, null);
+
+		SearchRequest searchRequest = new SearchRequest(BOOK_INDEX);
+		searchRequest.source(searchSourceBuilder);
+
+		return searchRequest;
+	}
+
+	SearchRequest createEngToHanSearchRequest(String query) {
+		MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("title_hantoeng", query);
+		SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
+		searchSourceBuilder.query(matchQueryBuilder);
+		searchSourceBuilder.from(0);
+		searchSourceBuilder.size(AUTO_COMPLETE_LIMIT);
+		String[] includes = {"title"};
+		searchSourceBuilder.fetchSource(includes, null);
+
+		SearchRequest searchRequest = new SearchRequest(BOOK_INDEX);
+		searchRequest.source(searchSourceBuilder);
+
+		return searchRequest;
+	}
+
 	BookSearchResponseDto createBookSearchResponseDto(SearchResponse response, String stage) {
 		BookSearchResponseDto responseDto = new BookSearchResponseDto();
 		responseDto.setResult("OK");
@@ -121,18 +152,7 @@ final class BookSearchHelper {
 		return responseDto;
 	}
 
-	SuggestResponseDto createAutoCompleteSuggestResponseDto(SearchResponse response) {
-
-		SuggestResponseDto responseDto = new SuggestResponseDto();
-		responseDto.setResult("OK");
-		responseDto.setTitles(Arrays.stream(response.getHits().getHits())
-				.map(hit -> hit.getSourceAsMap().get((String) "title").toString())
-				.collect(Collectors.toList()));
-
-		return responseDto;
-	}
-
-	SuggestResponseDto createChosungSuggestResponseDto(SearchResponse response) {
+	SuggestResponseDto createSuggestResponseDto(SearchResponse response) {
 
 		SuggestResponseDto responseDto = new SuggestResponseDto();
 		responseDto.setResult("OK");

@@ -13,8 +13,5 @@ public interface BookService {
 	BookSearchResponseDto search(BookSearchRequestDto bookSearchRequestDto)
 			throws BookSearchException;
 
-	SuggestResponseDto autoComplete(String query) throws BookSearchException;
-
-	SuggestResponseDto chosungSuggest(String query) throws BookSearchException;
-
+	SuggestResponseDto suggest(String query) throws BookSearchException;
 }

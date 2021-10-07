@@ -90,12 +90,17 @@ public final class BookServiceImpl implements BookService {
 		}
 	}
 
+
 	@Override
-	public SuggestResponseDto autoComplete(String query) throws BookSearchException {
-		SearchRequest searchRequest = bookSearchHelper.createAutoCompleteSearchRequest(query);
+	public SuggestResponseDto suggest(String query) throws BookSearchException {
+		
+	}
+
+	private SuggestResponseDto hanToEngSuggest(String query) throws BookSearchException {
+		SearchRequest searchRequest = bookSearchHelper.createHanToEngSearchRequest(query);
 		try {
 			SearchResponse response = esClient.search(searchRequest, RequestOptions.DEFAULT);
-			return bookSearchHelper.createAutoCompleteSuggestResponseDto(response);
+			return bookSearchHelper.createSuggestResponseDto(response);
 		} catch (IOException e) {
 			log.error("query=" + query, e);
 			SlackLogBot.sendError(e);
@@ -103,13 +108,36 @@ public final class BookServiceImpl implements BookService {
 		}
 	}
 
-	@Override
-	public SuggestResponseDto chosungSuggest(String query) throws BookSearchException {
+	private SuggestResponseDto engToHanSuggest(String query) throws BookSearchException {
+		SearchRequest searchRequest = bookSearchHelper.createEngToHanSearchRequest(query);
+		try {
+			SearchResponse response = esClient.search(searchRequest, RequestOptions.DEFAULT);
+			return bookSearchHelper.createSuggestResponseDto(response);
+		} catch (IOException e) {
+			log.error("query=" + query, e);
+			SlackLogBot.sendError(e);
+			throw new BookSearchException("엘라스틱서치 Search API 호출 에러");
+		}
+	}
+
+	private SuggestResponseDto autoComplete(String query) throws BookSearchException {
+		SearchRequest searchRequest = bookSearchHelper.createAutoCompleteSearchRequest(query);
+		try {
+			SearchResponse response = esClient.search(searchRequest, RequestOptions.DEFAULT);
+			return bookSearchHelper.createSuggestResponseDto(response);
+		} catch (IOException e) {
+			log.error("query=" + query, e);
+			SlackLogBot.sendError(e);
+			throw new BookSearchException("엘라스틱서치 Search API 호출 에러");
+		}
+	}
+
+	private SuggestResponseDto chosungSuggest(String query) throws BookSearchException {
 		query = HangulUtil.decomposeLayeredJaum(query);
 		SearchRequest searchRequest = bookSearchHelper.createChosungSearchRequest(query);
 		try {
 			SearchResponse response = esClient.search(searchRequest, RequestOptions.DEFAULT);
-			return bookSearchHelper.createChosungSuggestResponseDto(response);
+			return bookSearchHelper.createSuggestResponseDto(response);
 		} catch (IOException e) {
 			log.error("query=" + query, e);
 			SlackLogBot.sendError(e);

@@ -86,36 +86,5 @@ public class BookControllerTest {
 				.andExpect(content().string(objectMapper.writeValueAsString(responseDto)));
 	}
 
-	@Test
-	void testAutoComplete() throws Exception {
 
-		SuggestResponseDto responseDto = new SuggestResponseDto();
-		responseDto.setResult("OK");
-		responseDto.setTitles(Collections.singletonList("title"));
-
-		given(bookService.autoComplete(isA(String.class))).willReturn(responseDto);
-
-		MockHttpServletRequestBuilder request =
-				MockMvcRequestBuilders.get("/api/book/ac").param("query", "string");
-
-		mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(content().contentType("application/json"))
-				.andExpect(content().string(objectMapper.writeValueAsString(responseDto)));
-	}
-
-	@Test
-	void testChosungSuggest() throws Exception {
-		SuggestResponseDto responseDto = new SuggestResponseDto();
-		responseDto.setResult("OK");
-		responseDto.setTitles(Collections.singletonList("title"));
-
-		given(bookService.chosungSuggest(isA(String.class))).willReturn(responseDto);
-
-		MockHttpServletRequestBuilder request =
-				MockMvcRequestBuilders.get("/api/book/chosung").param("query", "string");
-
-		mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(content().contentType("application/json"))
-				.andExpect(content().string(objectMapper.writeValueAsString(responseDto)));
-	}
 }
