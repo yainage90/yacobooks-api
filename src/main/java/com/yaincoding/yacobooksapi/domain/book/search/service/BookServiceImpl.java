@@ -1,13 +1,13 @@
-package com.yaincoding.yacobooksapi.domain.book.service;
+package com.yaincoding.yacobooksapi.domain.book.search.service;
 
 import java.io.IOException;
 import com.google.gson.Gson;
-import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchRequestDto;
-import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchResponseDto;
-import com.yaincoding.yacobooksapi.domain.book.dto.SearchHitStage;
-import com.yaincoding.yacobooksapi.domain.book.dto.SuggestResponseDto;
-import com.yaincoding.yacobooksapi.domain.book.entity.Book;
-import com.yaincoding.yacobooksapi.domain.book.exception.BookSearchException;
+import com.yaincoding.yacobooksapi.domain.book.search.dto.BookSearchRequestDto;
+import com.yaincoding.yacobooksapi.domain.book.search.dto.BookSearchResponseDto;
+import com.yaincoding.yacobooksapi.domain.book.search.dto.SearchHitStage;
+import com.yaincoding.yacobooksapi.domain.book.search.dto.SuggestResponseDto;
+import com.yaincoding.yacobooksapi.domain.book.search.entity.Book;
+import com.yaincoding.yacobooksapi.domain.book.search.exception.BookSearchException;
 import com.yaincoding.yacobooksapi.slack.SlackLogBot;
 import com.yaincoding.yacobooksapi.util.HangulUtil;
 import org.elasticsearch.action.get.GetResponse;

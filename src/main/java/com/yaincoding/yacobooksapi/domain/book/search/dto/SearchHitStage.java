@@ -1,4 +1,4 @@
-package com.yaincoding.yacobooksapi.domain.book.dto;
+package com.yaincoding.yacobooksapi.domain.book.search.dto;
 
 public enum SearchHitStage {
 

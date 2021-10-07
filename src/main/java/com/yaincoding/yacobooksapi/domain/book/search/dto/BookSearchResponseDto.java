@@ -1,7 +1,7 @@
-package com.yaincoding.yacobooksapi.domain.book.dto;
+package com.yaincoding.yacobooksapi.domain.book.search.dto;
 
 import java.util.List;
-import com.yaincoding.yacobooksapi.domain.book.entity.Book;
+import com.yaincoding.yacobooksapi.domain.book.search.entity.Book;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

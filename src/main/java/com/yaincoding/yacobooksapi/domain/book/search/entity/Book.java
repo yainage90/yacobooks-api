@@ -1,4 +1,4 @@
-package com.yaincoding.yacobooksapi.domain.book.entity;
+package com.yaincoding.yacobooksapi.domain.book.search.entity;
 
 import java.util.List;
 import java.util.Objects;

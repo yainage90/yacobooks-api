@@ -1,12 +1,12 @@
-package com.yaincoding.yacobooksapi.domain.book.service;
+package com.yaincoding.yacobooksapi.domain.book.search.service;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import com.google.gson.Gson;
-import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchRequestDto;
-import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchResponseDto;
-import com.yaincoding.yacobooksapi.domain.book.dto.SuggestResponseDto;
-import com.yaincoding.yacobooksapi.domain.book.entity.Book;
+import com.yaincoding.yacobooksapi.domain.book.search.dto.BookSearchRequestDto;
+import com.yaincoding.yacobooksapi.domain.book.search.dto.BookSearchResponseDto;
+import com.yaincoding.yacobooksapi.domain.book.search.dto.SuggestResponseDto;
+import com.yaincoding.yacobooksapi.domain.book.search.entity.Book;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
