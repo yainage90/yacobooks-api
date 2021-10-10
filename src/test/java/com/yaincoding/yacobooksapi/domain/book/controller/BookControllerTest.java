@@ -5,8 +5,10 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import java.util.Collections;
 import java.util.UUID;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchRequestDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchResponseDto;
@@ -14,6 +16,7 @@ import com.yaincoding.yacobooksapi.domain.book.dto.SearchHitStage;
 import com.yaincoding.yacobooksapi.domain.book.dto.SuggestResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.entity.Book;
 import com.yaincoding.yacobooksapi.domain.book.service.BookService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,5 +89,21 @@ public class BookControllerTest {
 				.andExpect(content().string(objectMapper.writeValueAsString(responseDto)));
 	}
 
+	@Test
+	void testSuggest() throws Exception {
+		Book book = createTestBook();
+
+		SuggestResponseDto responseDto = new SuggestResponseDto();
+		responseDto.setResult("OK");
+		responseDto.setTitles(Collections.singletonList(book.getTitle()));
+
+		given(bookService.suggest(isA(String.class))).willReturn(responseDto);
+
+		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/api/book/suggest")
+				.param("query", "string");
+		mockMvc.perform(request).andExpect(status().isOk())
+				.andExpect(content().contentType("application/json"))
+				.andExpect(content().string(objectMapper.writeValueAsString(responseDto)));
+	}
 
 }
