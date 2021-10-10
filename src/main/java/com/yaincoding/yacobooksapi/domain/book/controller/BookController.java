@@ -38,16 +38,10 @@ public class BookController {
 		return ResponseEntity.ok(bookService.search(bookSearchRequestDto));
 	}
 
-	@GetMapping(value = "/ac")
-	public ResponseEntity<SuggestResponseDto> autoComplete(String query) {
-		log.info("/api/book/ac. query=" + query);
-		return ResponseEntity.ok(bookService.autoComplete(query));
-	}
-
-	@GetMapping(value = "/chosung")
-	public ResponseEntity<SuggestResponseDto> chosungSuggest(String query) {
-		log.info("/api/book/chosung. query=" + query);
-		return ResponseEntity.ok(bookService.chosungSuggest(query));
+	@GetMapping(value = "/suggest")
+	public ResponseEntity<SuggestResponseDto> suggest(String query) {
+		log.info("/api/book/suggest. query=" + query);
+		return ResponseEntity.ok(bookService.suggest(query));
 	}
 
 	@ExceptionHandler(BookSearchException.class)
