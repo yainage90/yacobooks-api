@@ -137,26 +137,54 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
             "lowercase"
           ]
         },
-        "hantoeng_analyzer": {
+        "hantoeng_index_analyzer": {
           "type": "custom",
-          "tokenizer": "standard",
+          "tokenizer": "keyword",
           "char_filter": [
             "special_character_filter"
+            "white_remove_char_filter"
+          ],
+          "filter": [
+            "lowercase",
+            "hanhinsam_hantoeng",
+            "ngram4_filter"
+          ]
+        },
+        "hantoeng_search_analyzer": {
+          "type": "custom",
+          "tokenizer": "keyword",
+          "char_filter": [
+            "special_character_filter"
+            "white_remove_char_filter"
           ],
           "filter": [
             "lowercase",
             "hanhinsam_hantoeng"
           ]
         },
-        "engtohan_analyzer": {
+        "engtohan_index_analyzer": {
           "type": "custom",
           "char_filter": [
-            "special_character_filter"
+            "special_character_filter",
+            "white_remove_char_filter"
           ],
-          "tokenizer": "standard",
+          "tokenizer": "keyword",
           "filter": [
             "lowercase",
-            "hanhinsam_engtohan"
+            "hanhinsam_engtohan",
+            "ngram4_filter"
+          ]
+        },
+        "engtohan_search_analyzer": {
+          "type": "custom",
+          "char_filter": [
+            "special_character_filter",
+            "white_remove_char_filter"
+          ],
+          "tokenizer": "keyword",
+          "filter": [
+            "lowercase",
+            "hanhinsam_engtohan",
           ]
         },
         "author_index_analyzer": {
@@ -202,13 +230,13 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
       },
       "title_engtohan": {
         "type": "text",
-        "analyzer": "standard", 
-        "search_analyzer": "engtohan_analyzer"
+        "analyzer": "engtohan_index_analyzer", 
+        "search_analyzer": "engtohan_search_analyzer"
       },
       "title_hantoeng": {
         "type": "text",
-        "analyzer": "standard", 
-        "search_analyzer": "hantoeng_analyzer"
+        "analyzer": "hantoeng_index_analyzer", 
+        "search_analyzer": "hantoeng_search_analyzer"
       },
       "author": {
         "type": "keyword",
