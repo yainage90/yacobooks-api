@@ -141,7 +141,7 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
           "type": "custom",
           "tokenizer": "keyword",
           "char_filter": [
-            "special_character_filter"
+            "special_character_filter",
             "white_remove_char_filter"
           ],
           "filter": [
@@ -154,7 +154,7 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
           "type": "custom",
           "tokenizer": "keyword",
           "char_filter": [
-            "special_character_filter"
+            "special_character_filter",
             "white_remove_char_filter"
           ],
           "filter": [
@@ -184,7 +184,7 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
           "tokenizer": "keyword",
           "filter": [
             "lowercase",
-            "hanhinsam_engtohan",
+            "hanhinsam_engtohan"
           ]
         },
         "author_index_analyzer": {
