@@ -3,7 +3,6 @@ package com.yaincoding.yacobooksapi.domain.book.service;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import com.google.gson.Gson;
-import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchRequestDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.SuggestResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.entity.Book;
@@ -18,7 +17,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
-final class BookSearchHelper {
+final class BookHelper {
 
 	private static final String BOOK_INDEX = "book";
 	private static final int COUNT_PER_PAGE = 10;
@@ -28,10 +27,7 @@ final class BookSearchHelper {
 		return new GetRequest(BOOK_INDEX, id);
 	}
 
-	SearchRequest createTitleSearchRequest(BookSearchRequestDto bookSearchRequestDto) {
-
-		String query = bookSearchRequestDto.getQuery();
-		int page = Math.max(1, bookSearchRequestDto.getPage());
+	SearchRequest createTitleSearchRequest(String query, int page) {
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		boolQueryBuilder.should().add(QueryBuilders.termQuery("title", query).boost(100.0f));
@@ -52,12 +48,7 @@ final class BookSearchHelper {
 		return searchRequest;
 	}
 
-	SearchRequest createTitleAuthorSearchRequest(BookSearchRequestDto bookSearchRequestDto) {
-		String query = bookSearchRequestDto.getQuery();
-		int page = bookSearchRequestDto.getPage();
-
-		// MultiMatchQueryBuilder multiMatchQueryBuilder =
-		// QueryBuilders.multiMatchQuery(query, "title_text", "author_text").operator(Operator.AND);
+	SearchRequest createTitleAuthorSearchRequest(String query, int page) {
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_text", query));
@@ -94,14 +85,13 @@ final class BookSearchHelper {
 		return searchRequest;
 	}
 
-	SearchRequest createChosungSearchRequest(String query) {
+	SearchRequest createChosungSearchRequest(String query, int page, String[] includes) {
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_chosung", query));
 		SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
 		searchSourceBuilder.query(boolQueryBuilder);
-		searchSourceBuilder.from(0);
+		searchSourceBuilder.from(COUNT_PER_PAGE * (page - 1));
 		searchSourceBuilder.size(AUTO_COMPLETE_LIMIT);
-		String[] includes = {"title"};
 		searchSourceBuilder.fetchSource(includes, null);
 
 		SearchRequest searchRequest = new SearchRequest(BOOK_INDEX);
@@ -110,13 +100,12 @@ final class BookSearchHelper {
 		return searchRequest;
 	}
 
-	SearchRequest createHanToEngSearchRequest(String query) {
+	SearchRequest createHanToEngSearchRequest(String query, int page, String[] includes) {
 		MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("title_engtohan", query);
 		SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
 		searchSourceBuilder.query(matchQueryBuilder);
-		searchSourceBuilder.from(0);
+		searchSourceBuilder.from(COUNT_PER_PAGE * (page - 1));
 		searchSourceBuilder.size(AUTO_COMPLETE_LIMIT);
-		String[] includes = {"title"};
 		searchSourceBuilder.fetchSource(includes, null);
 
 		SearchRequest searchRequest = new SearchRequest(BOOK_INDEX);
@@ -125,13 +114,12 @@ final class BookSearchHelper {
 		return searchRequest;
 	}
 
-	SearchRequest createEngToHanSearchRequest(String query) {
+	SearchRequest createEngToHanSearchRequest(String query, int page, String[] includes) {
 		MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("title_hantoeng", query);
 		SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
 		searchSourceBuilder.query(matchQueryBuilder);
-		searchSourceBuilder.from(0);
+		searchSourceBuilder.from(COUNT_PER_PAGE * (page - 1));
 		searchSourceBuilder.size(AUTO_COMPLETE_LIMIT);
-		String[] includes = {"title"};
 		searchSourceBuilder.fetchSource(includes, null);
 
 		SearchRequest searchRequest = new SearchRequest(BOOK_INDEX);
