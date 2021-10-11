@@ -101,7 +101,7 @@ final class BookHelper {
 	}
 
 	SearchRequest createHanToEngSearchRequest(String query, int page, String[] includes) {
-		MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("title_engtohan", query);
+		MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("title_hantoeng", query);
 		SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
 		searchSourceBuilder.query(matchQueryBuilder);
 		searchSourceBuilder.from(COUNT_PER_PAGE * (page - 1));
@@ -115,7 +115,7 @@ final class BookHelper {
 	}
 
 	SearchRequest createEngToHanSearchRequest(String query, int page, String[] includes) {
-		MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("title_hantoeng", query);
+		MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("title_engtohan", query);
 		SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
 		searchSourceBuilder.query(matchQueryBuilder);
 		searchSourceBuilder.from(COUNT_PER_PAGE * (page - 1));
