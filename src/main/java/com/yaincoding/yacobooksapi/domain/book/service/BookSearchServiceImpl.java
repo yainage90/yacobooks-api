@@ -76,13 +76,13 @@ public final class BookSearchServiceImpl implements BookSearchService {
 		}
 
 		if (HangulUtil.isEnglishQuery(query)) {
-			bookSearchResponseDto = searchEngToHan(query, page);
+			bookSearchResponseDto = searchHanToEng(query, page);
 			if (bookSearchResponseDto.getTotalHits() > 0) {
 				return bookSearchResponseDto;
 			}
 		}
 
-		bookSearchResponseDto = searchHanToEng(query, page);
+		bookSearchResponseDto = searchEngToHan(query, page);
 		if (bookSearchResponseDto.getTotalHits() > 0) {
 			return bookSearchResponseDto;
 		}
@@ -155,11 +155,11 @@ public final class BookSearchServiceImpl implements BookSearchService {
 		return BookSearchResponseDto.emptyResponse();
 	}
 
-	private BookSearchResponseDto searchHanToEng(String query, int page) {
+	private BookSearchResponseDto searchEngToHan(String query, int page) {
 		try {
 			String[] includes =
 					{"isbn13", "title", "author", "publisher", "pubDate", "imageUrl", "description"};
-			SearchRequest searchRequest = bookHelper.createHanToEngSearchRequest(query, page, includes);
+			SearchRequest searchRequest = bookHelper.createEngToHanSearchRequest(query, page, includes);
 			SearchResponse response = esClient.search(searchRequest, RequestOptions.DEFAULT);
 			if (response.getHits().getTotalHits().value > 0) {
 				BookSearchResponseDto responseDto = bookHelper.createBookSearchResponseDto(response,
@@ -178,15 +178,15 @@ public final class BookSearchServiceImpl implements BookSearchService {
 		return BookSearchResponseDto.emptyResponse();
 	}
 
-	private BookSearchResponseDto searchEngToHan(String query, int page) {
+	private BookSearchResponseDto searchHanToEng(String query, int page) {
 		try {
 			String[] includes =
 					{"isbn13", "title", "author", "publisher", "pubDate", "imageUrl", "description"};
-			SearchRequest searchRequest = bookHelper.createEngToHanSearchRequest(query, page, includes);
+			SearchRequest searchRequest = bookHelper.createHanToEngSearchRequest(query, page, includes);
 			SearchResponse response = esClient.search(searchRequest, RequestOptions.DEFAULT);
 			if (response.getHits().getTotalHits().value > 0) {
 				BookSearchResponseDto responseDto = bookHelper.createBookSearchResponseDto(response,
-						SearchHitStage.ENG_TO_HAN_SEARCH.getStage());
+						SearchHitStage.HAN_TO_ENG_SEARCH.getStage());
 
 				log.debug(responseDto.toString());
 
