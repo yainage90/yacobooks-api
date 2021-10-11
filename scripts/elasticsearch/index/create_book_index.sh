@@ -156,14 +156,13 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
         },
         "hantoeng_search_analyzer": {
           "type": "custom",
-          "tokenizer": "keyword",
           "char_filter": [
             "special_character_filter",
             "white_remove_char_filter"
           ],
+          "tokenizer": "keyword",
           "filter": [
             "lowercase",
-            "hanhinsam_hantoeng"
           ]
         },
         "engtohan_index_analyzer": {
@@ -188,7 +187,6 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
           "tokenizer": "keyword",
           "filter": [
             "lowercase",
-            "hanhinsam_engtohan"
           ]
         },
         "author_index_analyzer": {
