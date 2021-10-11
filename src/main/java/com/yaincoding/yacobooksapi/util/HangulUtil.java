@@ -39,6 +39,19 @@ public class HangulUtil {
 		return queryBuilder.toString();
 	}
 
+	public static boolean isCompleteHangulQuery(String query) {
+		int completeCount = 0;
+		for (char ch : query.toCharArray()) {
+			if (!(ch >= '가' && ch <= '힣')) {
+				completeCount++;
+			}
+		}
+
+		float completeRatio = (float) completeCount / query.length();
+
+		return completeRatio > 0.7;
+	}
+
 	public static final Set<Character> CHOSUNG_SET = new HashSet<>() {
 		{
 			add(' ');
