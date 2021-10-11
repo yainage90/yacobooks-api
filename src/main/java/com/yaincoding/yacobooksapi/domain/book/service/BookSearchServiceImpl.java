@@ -54,16 +54,19 @@ public final class BookSearchServiceImpl implements BookSearchService {
 		String query = bookSearchRequestDto.getQuery();
 		int page = bookSearchRequestDto.getPage();
 
-		BookSearchResponseDto bookSearchResponseDto = searchTitle(query, page);
-		if (bookSearchResponseDto.getTotalHits() > 0) {
-			return bookSearchResponseDto;
-		}
+		BookSearchResponseDto bookSearchResponseDto;
 
-		bookSearchResponseDto = searchTitleAuthor(query, page);
-		if (bookSearchResponseDto.getTotalHits() > 0) {
-			return bookSearchResponseDto;
-		}
+		if (HangulUtil.isCompleteHangulQuery(query)) {
+			bookSearchResponseDto = searchTitle(query, page);
+			if (bookSearchResponseDto.getTotalHits() > 0) {
+				return bookSearchResponseDto;
+			}
 
+			bookSearchResponseDto = searchTitleAuthor(query, page);
+			if (bookSearchResponseDto.getTotalHits() > 0) {
+				return bookSearchResponseDto;
+			}
+		}
 
 		if (HangulUtil.isChosungQuery(bookSearchRequestDto.getQuery())) {
 			bookSearchResponseDto = searchByChosung(query, page);
@@ -114,7 +117,7 @@ public final class BookSearchServiceImpl implements BookSearchService {
 			SearchResponse response = esClient.search(searchRequest, RequestOptions.DEFAULT);
 			if (response.getHits().getTotalHits().value > 0) {
 				BookSearchResponseDto responseDto = bookHelper.createBookSearchResponseDto(response,
-						SearchHitStage.TITLE_SEARCH.getStage());
+						SearchHitStage.TITLE_AUTHOR_SEARCH.getStage());
 
 				log.debug(responseDto.toString());
 
