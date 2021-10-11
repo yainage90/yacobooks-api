@@ -42,7 +42,7 @@ public class HangulUtil {
 	public static boolean isCompleteHangulQuery(String query) {
 		int completeCount = 0;
 		for (char ch : query.toCharArray()) {
-			if (!(ch >= '가' && ch <= '힣')) {
+			if (ch >= '가' && ch <= '힣') {
 				completeCount++;
 			}
 		}
