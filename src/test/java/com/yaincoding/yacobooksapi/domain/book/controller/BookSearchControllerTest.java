@@ -5,18 +5,14 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import java.util.Collections;
 import java.util.UUID;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchRequestDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.SearchHitStage;
-import com.yaincoding.yacobooksapi.domain.book.dto.SuggestResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.entity.Book;
-import com.yaincoding.yacobooksapi.domain.book.service.BookService;
-
+import com.yaincoding.yacobooksapi.domain.book.service.BookSearchService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +24,14 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 
-@WebMvcTest(BookController.class)
-public class BookControllerTest {
+@WebMvcTest(BookSearchController.class)
+public class BookSearchControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
 
 	@MockBean
-	private BookService bookService;
+	private BookSearchService bookSearchService;
 
 	private ObjectMapper objectMapper;
 
@@ -63,7 +59,7 @@ public class BookControllerTest {
 
 		Book book = createTestBook();
 
-		given(bookService.getById(book.getIsbn13())).willReturn(book);
+		given(bookSearchService.getById(book.getIsbn13())).willReturn(book);
 
 		mockMvc.perform(get("/api/book/" + book.getIsbn13())).andExpect(status().isOk())
 				.andExpect(content().contentType("application/json"))
@@ -80,27 +76,10 @@ public class BookControllerTest {
 		responseDto.setSearchHitStage(SearchHitStage.TITLE_SEARCH.getStage());
 		responseDto.setBooks(Collections.singletonList(book));
 
-		given(bookService.search(isA(BookSearchRequestDto.class))).willReturn(responseDto);
+		given(bookSearchService.search(isA(BookSearchRequestDto.class))).willReturn(responseDto);
 
 		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/api/book/search")
 				.param("query", "string").requestAttr("page", 1);
-		mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(content().contentType("application/json"))
-				.andExpect(content().string(objectMapper.writeValueAsString(responseDto)));
-	}
-
-	@Test
-	void testSuggest() throws Exception {
-		Book book = createTestBook();
-
-		SuggestResponseDto responseDto = new SuggestResponseDto();
-		responseDto.setResult("OK");
-		responseDto.setTitles(Collections.singletonList(book.getTitle()));
-
-		given(bookService.suggest(isA(String.class))).willReturn(responseDto);
-
-		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/api/book/suggest")
-				.param("query", "string");
 		mockMvc.perform(request).andExpect(status().isOk())
 				.andExpect(content().contentType("application/json"))
 				.andExpect(content().string(objectMapper.writeValueAsString(responseDto)));
