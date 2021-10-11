@@ -47,7 +47,7 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
             "디자인 => ",
             "편집 => ",
             "외편집 => ",
-            "편저 => "
+            "편저 => ",
             "교주자 => "
           ]
         }
@@ -162,7 +162,7 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
           ],
           "tokenizer": "keyword",
           "filter": [
-            "lowercase",
+            "lowercase"
           ]
         },
         "engtohan_index_analyzer": {
@@ -186,7 +186,7 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
           ],
           "tokenizer": "keyword",
           "filter": [
-            "lowercase",
+            "lowercase"
           ]
         },
         "author_index_analyzer": {
