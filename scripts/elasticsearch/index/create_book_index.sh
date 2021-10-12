@@ -60,20 +60,20 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
 				}
 			},
       "filter": {
-        "ngram4_filter": {
-          "type": "ngram",
-          "min_gram": 4,
-          "max_gram": 50
-        },
         "ngram2_filter": {
           "type": "ngram",
           "min_gram": 2,
           "max_gram": 10
         },
-        "edge_ngram_front_filter": {
-          "type": "edge_ngram",
-          "min_gram": 2,
-          "max_gram": 10
+        "ngram3_filter": {
+          "type": "ngram",
+          "min_gram": 3,
+          "max_gram": 50
+        },
+        "ngram4_filter": {
+          "type": "ngram",
+          "min_gram": 4,
+          "max_gram": 50
         }
       },
       "analyzer": {
@@ -108,10 +108,9 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
         "ac_search_analyzer": {
           "type": "custom",
           "char_filter": [
-            "white_remove_char_filter",
             "special_character_filter"
           ],
-          "tokenizer": "keyword",
+          "tokenizer": "standard",
           "filter": [
             "lowercase",
             "hanhinsam_jamo"
@@ -127,40 +126,38 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
           "filter": [
             "lowercase",
             "hanhinsam_chosung",
-            "edge_ngram_front_filter"
+            "ngram4_filter"
           ]
         },
         "chosung_search_analyzer": {
           "type": "custom",
           "char_filter": [
-            "white_remove_char_filter",
             "special_character_filter"
           ],
-          "tokenizer": "keyword",
+          "tokenizer": "standard",
           "filter": [
             "lowercase"
           ]
         },
         "hantoeng_index_analyzer": {
           "type": "custom",
-          "tokenizer": "keyword",
           "char_filter": [
             "special_character_filter",
             "white_remove_char_filter"
           ],
+          "tokenizer": "keyword",
           "filter": [
             "lowercase",
             "hanhinsam_hantoeng",
-            "ngram4_filter"
+            "ngram3_filter"
           ]
         },
         "hantoeng_search_analyzer": {
           "type": "custom",
           "char_filter": [
-            "special_character_filter",
-            "white_remove_char_filter"
+            "special_character_filter"
           ],
-          "tokenizer": "keyword",
+          "tokenizer": "standard",
           "filter": [
             "lowercase"
           ]
@@ -181,10 +178,9 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
         "engtohan_search_analyzer": {
           "type": "custom",
           "char_filter": [
-            "special_character_filter",
-            "white_remove_char_filter"
+            "special_character_filter"
           ],
-          "tokenizer": "keyword",
+          "tokenizer": "standard",
           "filter": [
             "lowercase"
           ]
