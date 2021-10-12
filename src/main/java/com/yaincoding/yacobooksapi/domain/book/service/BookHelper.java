@@ -10,7 +10,6 @@ import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -73,7 +72,7 @@ final class BookHelper {
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		boolQueryBuilder.should()
 				.add(QueryBuilders.matchQuery("title_ac", query.replaceAll("\\s+", "")).boost(10.0f));
-		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_ac", query).boost(1.0f));
+		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_ac", query));
 		SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
 		searchSourceBuilder.query(boolQueryBuilder);
 		searchSourceBuilder.from(0);
@@ -89,6 +88,8 @@ final class BookHelper {
 
 	SearchRequest createChosungSearchRequest(String query, int page, String[] includes) {
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+		boolQueryBuilder.should()
+				.add(QueryBuilders.matchQuery("title_chosung", query.replaceAll("\\s+", "")).boost(10.0f));
 		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_chosung", query));
 		SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
 		searchSourceBuilder.query(boolQueryBuilder);
@@ -103,9 +104,13 @@ final class BookHelper {
 	}
 
 	SearchRequest createHanToEngSearchRequest(String query, int page, String[] includes) {
-		MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("title_hantoeng", query);
+
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+		boolQueryBuilder.should()
+				.add(QueryBuilders.matchQuery("title_hantoeng", query.replaceAll("\\s+", "")).boost(10.0f));
+		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_hantoeng", query));
 		SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
-		searchSourceBuilder.query(matchQueryBuilder);
+		searchSourceBuilder.query(boolQueryBuilder);
 		searchSourceBuilder.from(COUNT_PER_PAGE * (page - 1));
 		searchSourceBuilder.size(AUTO_COMPLETE_LIMIT);
 		searchSourceBuilder.fetchSource(includes, null);
@@ -117,9 +122,12 @@ final class BookHelper {
 	}
 
 	SearchRequest createEngToHanSearchRequest(String query, int page, String[] includes) {
-		MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("title_engtohan", query);
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+		boolQueryBuilder.should()
+				.add(QueryBuilders.matchQuery("title_engtohan", query.replaceAll("\\s+", "")).boost(10.0f));
+		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_engtohan", query));
 		SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
-		searchSourceBuilder.query(matchQueryBuilder);
+		searchSourceBuilder.query(boolQueryBuilder);
 		searchSourceBuilder.from(COUNT_PER_PAGE * (page - 1));
 		searchSourceBuilder.size(AUTO_COMPLETE_LIMIT);
 		searchSourceBuilder.fetchSource(includes, null);
