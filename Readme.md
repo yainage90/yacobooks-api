@@ -18,18 +18,69 @@ yacobooks의 api 프로젝트.
 
 ### 1) 검색
 
-책 검색. 제목, 저자명 등의 필드를 통한 검색. Nori 분석기를 사용하였으며 한글 자모 분리, 전방위 ngram 매칭, 초성 추출 등을 적용.
++ #### 일반 검색
+
+제목, 저자명을 통한 검색. Nori analyzer 적용
+
+ex) C언어 알고리즘 -> 'C언어', '알고리즘' 단어를 포함하는 제목을 가진 도서 검색
+
+![general_search](./images/general_search.png)
+
+<br>
+
++ #### 초성 검색
+
+초성을 통한 검색. ngram 필터 적용하여 띄어쓰기에 구애받지 않음
+
+ex) ㅇㄷㄹㅇㄷㅍㄺㄻ -> 초성이 'ㅇㄷㄹㅇㄷㅍㄹㄱㄹㅁ'인 단어를 포함하는 제목을 가진 도서 검색
+
+![chosung_search](./images/chosung_search.png)
+
+<br>
+
++ #### 영->한 전환 검색
+
+ngram 필터 적용하여 띄어쓰기에 구애받지 않음
+
+ex) qkfltmxk -> '바리스타' 단어를 포함하는 제목을 가진 도서 검색
+
+![engtohan_search](./images/engtohan_search.png)
+
+<br>
+
++ #### 한->영 전환 검색
+
+ngram 필터 적용하여 띄어쓰기에 구애받지 않음
+
+ex) 뭉개ㅑ에갷ㄱ므ㅡㅑㅜㅎ-> 'androidprogramming' 단어를 포함하는 제목을 가진 도서 검색
+
+![hantoeng_search](./images/hantoeng_search.png)
+
+<br>
 
 ### 2) 자동 완성
 
-자모 분리를 적용하였기 때문에 자모 레벨의 자동완성 적용.
-ex) 프로글 -> 프로그래밍
-양방향 ngram 색인을 적용하였기 때문에 부분 매칭 자동 완성 기능 제공
-ex) 디자인패턴 -> HeadFirst 디자인패턴 입문
++ #### 일반 자동완성
 
-### 3) 초성 추천
+![general_suggest](./images/general_suggest.png)
 
-초성 추출, 전방위 ngram 색인을 적용하여 자연스러운 검색 제안 기능 제공. 자동완성과 달리 전방위 ngram 매칭 적용.
+<br>
+
++ #### 초성 자동완성
+
+![chosung_suggest](./images/chosung_suggest.png)
+
+<br>
+
++ #### 영->한 전환 자동완성
+
+![engtohan_suggest](./images/engtohan_suggest.png)
+
+<br>
+
++ #### 한->영 전환 자동완성
+
+![hantoeng_suggest](./images/hantoeng_suggest.png)
 
 <br>
 
@@ -40,11 +91,8 @@ ex) 디자인패턴 -> HeadFirst 디자인패턴 입문
 + **요청**
 
 ``` http
-/api/book/9788993383614
+/api/book/<isbn13>
 ```
-
-+ path variable
-  + isbn13: 도서 isbn13
 
 <br>
 
@@ -61,7 +109,7 @@ ex) 디자인패턴 -> HeadFirst 디자인패턴 입문
   "imageUrl": "https://bookthumb-phinf.pstatic.net/cover/060/740/06074095.jpg?type=m1&udate=20141122",
   "description": "『안드로이드 분석과 실습』(CD1장포함)은 처음 기초 전자, 전기, 통신, 컴퓨터, 제어 및 응용을 접하는 학생에게 기본적이며 쉽고 빠르게 접근할 수 있도록 초점을 맞춘 교재이다.",
   "links": null
-
+}
 ```
 
 <br>
@@ -71,12 +119,8 @@ ex) 디자인패턴 -> HeadFirst 디자인패턴 입문
 + **요청**
 
 ``` http
-/api/book/search?query=자바 안드로이드&page=1
+/api/book/search?query=<검색어>&page=<페이지 번호>
 ```
-
-+ params
-  + query: 검색 쿼리
-  + page: 페이지
 
 <br>
 
@@ -121,11 +165,8 @@ ex) 디자인패턴 -> HeadFirst 디자인패턴 입문
 + **요청**
 
 ``` http
-/api/book/ac?query=자바 프로
+/api/book/ac?query=<검색어>
 ```
-
-+ params
-  + query: 사용자 입력 쿼리
 
 <br>
 
@@ -150,31 +191,3 @@ ex) 디자인패턴 -> HeadFirst 디자인패턴 입문
 ```
 
 <br>
-
-### 4) 초성 추천
-
-+ **요청**
-
-``` http
-/api/book/chosung?query=ㅇㄷㄹㅇㄷ
-```
-
-+ params
-  + query: 사용자 입력 쿼리
-
-<br>
-
-+ **응답**
-
-``` json
-{
-  "result": "OK",
-  "titles": [
-    "(안드로이드 플랫폼과 응용을 함께 배우는) 임베디드 프로그래밍 ",
-    "엔드 리 엔드 =End re end",
-    "아들러 아동상담=이론과 실제/Adlerian child counseling",
-    "엔드 리 엔드 =End re end",
-    "안드리아 대륙기 =임중상 퓨전 판타지 장편소설.The andria story "
-  ]
-}
-```
