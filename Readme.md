@@ -16,6 +16,12 @@ yacobooks의 api 프로젝트.
 
 # 2. 기능
 
+인덱스 생성 스크립트(`scripts/elasticsearch/index/create_book_index.sh`)를 확인하시면 분석기 설정과 자세한 필드 매핑을 확인하실 수 있습니다.
+
+[create_book_index.sh](scripts/elasticsearch/index/create_book_index.sh)
+
+<br>
+
 ### 1) 검색
 
 + #### 일반 검색
