@@ -22,7 +22,7 @@ public class BookSearchResponseDto {
 		responseDto.setResult("OK");
 		responseDto.setTotalHits(0);
 		responseDto.setBooks(Collections.emptyList());
-		responseDto.setSearchHitStage(SearchHitStage.NO_RESULT.getStage());
+		responseDto.setSearchHitStage(SearchHitStage.NO_RESULT.toString());
 
 		return responseDto;
 	}

@@ -95,8 +95,8 @@ public final class BookSearchServiceImpl implements BookSearchService {
 			SearchRequest searchRequest = bookHelper.createTitleSearchRequest(query, page);
 			SearchResponse response = esClient.search(searchRequest, RequestOptions.DEFAULT);
 			if (response.getHits().getTotalHits().value > 0) {
-				BookSearchResponseDto responseDto = bookHelper.createBookSearchResponseDto(response,
-						SearchHitStage.TITLE_SEARCH.getStage());
+				BookSearchResponseDto responseDto =
+						bookHelper.createBookSearchResponseDto(response, SearchHitStage.TITLE.toString());
 
 				log.debug(responseDto.toString());
 
@@ -117,7 +117,7 @@ public final class BookSearchServiceImpl implements BookSearchService {
 			SearchResponse response = esClient.search(searchRequest, RequestOptions.DEFAULT);
 			if (response.getHits().getTotalHits().value > 0) {
 				BookSearchResponseDto responseDto = bookHelper.createBookSearchResponseDto(response,
-						SearchHitStage.TITLE_AUTHOR_SEARCH.getStage());
+						SearchHitStage.TITLE_AUTHOR.toString());
 
 				log.debug(responseDto.toString());
 
@@ -139,8 +139,8 @@ public final class BookSearchServiceImpl implements BookSearchService {
 			SearchRequest searchRequest = bookHelper.createChosungSearchRequest(query, page, includes);
 			SearchResponse response = esClient.search(searchRequest, RequestOptions.DEFAULT);
 			if (response.getHits().getTotalHits().value > 0) {
-				BookSearchResponseDto responseDto = bookHelper.createBookSearchResponseDto(response,
-						SearchHitStage.CHOSUNG_SEARCH.getStage());
+				BookSearchResponseDto responseDto =
+						bookHelper.createBookSearchResponseDto(response, SearchHitStage.CHOSUNG.toString());
 
 				log.debug(responseDto.toString());
 
@@ -162,8 +162,8 @@ public final class BookSearchServiceImpl implements BookSearchService {
 			SearchRequest searchRequest = bookHelper.createEngToHanSearchRequest(query, page, includes);
 			SearchResponse response = esClient.search(searchRequest, RequestOptions.DEFAULT);
 			if (response.getHits().getTotalHits().value > 0) {
-				BookSearchResponseDto responseDto = bookHelper.createBookSearchResponseDto(response,
-						SearchHitStage.ENG_TO_HAN_SEARCH.getStage());
+				BookSearchResponseDto responseDto =
+						bookHelper.createBookSearchResponseDto(response, SearchHitStage.ENG_TO_HAN.toString());
 
 				log.debug(responseDto.toString());
 
@@ -185,8 +185,8 @@ public final class BookSearchServiceImpl implements BookSearchService {
 			SearchRequest searchRequest = bookHelper.createHanToEngSearchRequest(query, page, includes);
 			SearchResponse response = esClient.search(searchRequest, RequestOptions.DEFAULT);
 			if (response.getHits().getTotalHits().value > 0) {
-				BookSearchResponseDto responseDto = bookHelper.createBookSearchResponseDto(response,
-						SearchHitStage.HAN_TO_ENG_SEARCH.getStage());
+				BookSearchResponseDto responseDto =
+						bookHelper.createBookSearchResponseDto(response, SearchHitStage.HAN_TO_ENG.toString());
 
 				log.debug(responseDto.toString());
 
