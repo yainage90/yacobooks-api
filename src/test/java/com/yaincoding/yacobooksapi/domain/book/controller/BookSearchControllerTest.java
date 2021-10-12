@@ -73,7 +73,7 @@ public class BookSearchControllerTest {
 		BookSearchResponseDto responseDto = new BookSearchResponseDto();
 		responseDto.setResult("OK");
 		responseDto.setTotalHits(1L);
-		responseDto.setSearchHitStage(SearchHitStage.TITLE_SEARCH.getStage());
+		responseDto.setSearchHitStage(SearchHitStage.TITLE.toString());
 		responseDto.setBooks(Collections.singletonList(book));
 
 		given(bookSearchService.search(isA(BookSearchRequestDto.class))).willReturn(responseDto);
