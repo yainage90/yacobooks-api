@@ -71,7 +71,9 @@ final class BookHelper {
 	SearchRequest createAutoCompleteSearchRequest(String query) {
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_ac", query));
+		boolQueryBuilder.should()
+				.add(QueryBuilders.matchQuery("title_ac", query.replaceAll("\\s+", "")).boost(10.0f));
+		boolQueryBuilder.should().add(QueryBuilders.matchQuery("title_ac", query).boost(1.0f));
 		SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
 		searchSourceBuilder.query(boolQueryBuilder);
 		searchSourceBuilder.from(0);
