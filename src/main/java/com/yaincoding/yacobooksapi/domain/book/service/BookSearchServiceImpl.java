@@ -133,6 +133,7 @@ public final class BookSearchServiceImpl implements BookSearchService {
 	}
 
 	private BookSearchResponseDto searchByChosung(String query, int page) {
+		query = HangulUtil.decomposeLayeredJaum(query);
 		try {
 			String[] includes =
 					{"isbn13", "title", "author", "publisher", "pubDate", "imageUrl", "description"};
