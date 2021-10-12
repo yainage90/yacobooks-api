@@ -58,7 +58,7 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
           "decompound_mode": "mixed",
           "discard_punctuation": "true"
         }
-			},
+      },
       "filter": {
         "ngram2_filter": {
           "type": "ngram",
