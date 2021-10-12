@@ -32,7 +32,7 @@ final class BookHelper {
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		boolQueryBuilder.should().add(QueryBuilders.termQuery("title", query).boost(100.0f));
 		boolQueryBuilder.should()
-				.add(QueryBuilders.matchQuery("title_text", query).operator(Operator.AND).boost(20.0f));
+				.add(QueryBuilders.matchQuery("title_text", query).operator(Operator.AND));
 
 		SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource();
 		searchSourceBuilder.query(boolQueryBuilder);
