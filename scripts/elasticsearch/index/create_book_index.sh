@@ -53,11 +53,11 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
         }
       },
       "tokenizer": {
-				"title_nori_tokenizer": {
-					"type": "nori_tokenizer",
-					"decompound_mode": "mixed",
-					"discard_punctuation": "true"
-				}
+        "title_nori_tokenizer": {
+          "type": "nori_tokenizer",
+          "decompound_mode": "mixed",
+          "discard_punctuation": "true"
+        }
 			},
       "filter": {
         "ngram2_filter": {
@@ -89,7 +89,7 @@ curl -XPUT "$ES_HOST:$ES_PORT/book?pretty" \
           "tokenizer": "title_nori_tokenizer",
           "filter": [
             "lowercase",
-						"nori_readingform"
+            "nori_readingform"
           ]
         },
         "ac_index_analyzer": {
