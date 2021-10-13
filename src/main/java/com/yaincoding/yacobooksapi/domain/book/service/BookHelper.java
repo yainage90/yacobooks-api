@@ -1,8 +1,11 @@
 package com.yaincoding.yacobooksapi.domain.book.service;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
-import com.google.gson.Gson;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.SuggestResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.entity.Book;
@@ -12,15 +15,22 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@RequiredArgsConstructor
+@Slf4j
 final class BookHelper {
 
 	private static final String BOOK_INDEX = "book";
 	private static final int COUNT_PER_PAGE = 10;
 	private static final int AUTO_COMPLETE_LIMIT = 10;
+
+	private final ObjectMapper objectMapper;
 
 	public GetRequest createGetByIdRequest(String id) {
 		return new GetRequest(BOOK_INDEX, id);
@@ -143,9 +153,20 @@ final class BookHelper {
 		responseDto.setResult("OK");
 		responseDto.setSearchHitStage(stage);
 		responseDto.setTotalHits(response.getHits().getTotalHits().value);
-		responseDto.setBooks(Arrays.stream(response.getHits().getHits())
-				.map(hit -> new Gson().fromJson(hit.getSourceAsString(), Book.class))
-				.collect(Collectors.toList()));
+
+		SearchHit[] hits = response.getHits().getHits();
+		List<Book> searchedBooks = Collections.emptyList();
+		for (SearchHit hit : hits) {
+			try {
+				Book book = objectMapper.readValue(hit.getSourceAsString(), Book.class);
+				searchedBooks.add(book);
+			} catch (JsonProcessingException e) {
+				log.error("Json Parse Exception in parsing searched book. book=" + hit.getSourceAsString(),
+						e);
+			}
+		}
+
+		responseDto.setBooks(searchedBooks);
 
 		return responseDto;
 	}
