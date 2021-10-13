@@ -3,9 +3,9 @@ package com.yaincoding.yacobooksapi.domain.book.controller;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchRequestDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.entity.Book;
-import com.yaincoding.yacobooksapi.domain.book.exception.BookSearchException;
 import com.yaincoding.yacobooksapi.domain.book.service.BookSearchService;
 import com.yaincoding.yacobooksapi.slack.SlackLogBot;
+import org.elasticsearch.ElasticsearchException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -37,8 +37,8 @@ public class BookSearchController {
 		return ResponseEntity.ok(bookSearchService.search(bookSearchRequestDto));
 	}
 
-	@ExceptionHandler(BookSearchException.class)
-	public ResponseEntity<String> handleSearchException(BookSearchException e) {
+	@ExceptionHandler(ElasticsearchException.class)
+	public ResponseEntity<String> handleSearchException(ElasticsearchException e) {
 		log.error(e.getMessage(), e);
 		SlackLogBot.sendError(e);
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("FAIL");

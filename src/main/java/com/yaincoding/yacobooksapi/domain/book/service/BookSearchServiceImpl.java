@@ -6,9 +6,9 @@ import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchRequestDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.BookSearchResponseDto;
 import com.yaincoding.yacobooksapi.domain.book.dto.SearchHitStage;
 import com.yaincoding.yacobooksapi.domain.book.entity.Book;
-import com.yaincoding.yacobooksapi.domain.book.exception.BookSearchException;
 import com.yaincoding.yacobooksapi.slack.SlackLogBot;
 import com.yaincoding.yacobooksapi.util.HangulUtil;
+import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -27,7 +27,7 @@ public final class BookSearchServiceImpl implements BookSearchService {
 	private final BookHelper bookHelper;
 
 	@Override
-	public Book getById(String id) throws BookSearchException {
+	public Book getById(String id) throws ElasticsearchException {
 
 		GetResponse response;
 		try {
@@ -35,7 +35,7 @@ public final class BookSearchServiceImpl implements BookSearchService {
 		} catch (IOException e) {
 			log.error("IOException occured.");
 			SlackLogBot.sendError(e);
-			throw new BookSearchException("엘라스틱서치 GET API 호출 에러");
+			throw new ElasticsearchException(e);
 		}
 
 		if (!response.isExists()) {
@@ -49,7 +49,7 @@ public final class BookSearchServiceImpl implements BookSearchService {
 
 	@Override
 	public BookSearchResponseDto search(BookSearchRequestDto bookSearchRequestDto)
-			throws BookSearchException {
+			throws ElasticsearchException {
 
 		String query = bookSearchRequestDto.getQuery();
 		int page = bookSearchRequestDto.getPage();
@@ -105,7 +105,7 @@ public final class BookSearchServiceImpl implements BookSearchService {
 		} catch (IOException e) {
 			log.error("query=" + query + ", page=" + page, e);
 			SlackLogBot.sendError(e);
-			throw new BookSearchException("엘라스틱서치 Search API 호출 에러");
+			throw new ElasticsearchException(e);
 		}
 
 		return BookSearchResponseDto.emptyResponse();
@@ -126,7 +126,7 @@ public final class BookSearchServiceImpl implements BookSearchService {
 		} catch (IOException e) {
 			log.error("query=" + query + ", page=" + page, e);
 			SlackLogBot.sendError(e);
-			throw new BookSearchException("엘라스틱서치 Search API 호출 에러");
+			throw new ElasticsearchException(e);
 		}
 
 		return BookSearchResponseDto.emptyResponse();
@@ -150,7 +150,7 @@ public final class BookSearchServiceImpl implements BookSearchService {
 		} catch (IOException e) {
 			log.error("query=" + query + ", page=" + page, e);
 			SlackLogBot.sendError(e);
-			throw new BookSearchException("엘라스틱서치 Search API 호출 에러");
+			throw new ElasticsearchException(e);
 		}
 
 		return BookSearchResponseDto.emptyResponse();
@@ -173,7 +173,7 @@ public final class BookSearchServiceImpl implements BookSearchService {
 		} catch (IOException e) {
 			log.error("query=" + query + ", page=" + page, e);
 			SlackLogBot.sendError(e);
-			throw new BookSearchException("엘라스틱서치 Search API 호출 에러");
+			throw new ElasticsearchException(e);
 		}
 
 		return BookSearchResponseDto.emptyResponse();
@@ -196,7 +196,7 @@ public final class BookSearchServiceImpl implements BookSearchService {
 		} catch (IOException e) {
 			log.error("query=" + query + ", page=" + page, e);
 			SlackLogBot.sendError(e);
-			throw new BookSearchException("엘라스틱서치 Search API 호출 에러");
+			throw new ElasticsearchException(e);
 		}
 
 		return BookSearchResponseDto.emptyResponse();

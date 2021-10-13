@@ -2,9 +2,9 @@ package com.yaincoding.yacobooksapi.domain.book.service;
 
 import java.io.IOException;
 import com.yaincoding.yacobooksapi.domain.book.dto.SuggestResponseDto;
-import com.yaincoding.yacobooksapi.domain.book.exception.BookSearchException;
 import com.yaincoding.yacobooksapi.slack.SlackLogBot;
 import com.yaincoding.yacobooksapi.util.HangulUtil;
+import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -22,7 +22,7 @@ public class BookSuggestServiceImpl implements BookSuggestService {
 	private final BookHelper bookHelper;
 
 	@Override
-	public SuggestResponseDto suggest(String query) throws BookSearchException {
+	public SuggestResponseDto suggest(String query) throws ElasticsearchException {
 
 		if (HangulUtil.isChosungQuery(query)) {
 			SuggestResponseDto responseDto = chosungSuggest(query);
@@ -49,7 +49,7 @@ public class BookSuggestServiceImpl implements BookSuggestService {
 		return SuggestResponseDto.emptyResponse();
 	}
 
-	private SuggestResponseDto chosungSuggest(String query) throws BookSearchException {
+	private SuggestResponseDto chosungSuggest(String query) throws ElasticsearchException {
 		query = HangulUtil.decomposeLayeredJaum(query);
 		String[] includes = {"title"};
 		SearchRequest searchRequest = bookHelper.createChosungSearchRequest(query, 1, includes);
@@ -59,11 +59,11 @@ public class BookSuggestServiceImpl implements BookSuggestService {
 		} catch (IOException e) {
 			log.error("query=" + query, e);
 			SlackLogBot.sendError(e);
-			throw new BookSearchException("엘라스틱서치 Search API 호출 에러");
+			throw new ElasticsearchException("엘라스틱서치 Search API 호출 에러");
 		}
 	}
 
-	private SuggestResponseDto autoComplete(String query) throws BookSearchException {
+	private SuggestResponseDto autoComplete(String query) throws ElasticsearchException {
 		SearchRequest searchRequest = bookHelper.createAutoCompleteSearchRequest(query);
 		try {
 			SearchResponse response = esClient.search(searchRequest, RequestOptions.DEFAULT);
@@ -71,11 +71,11 @@ public class BookSuggestServiceImpl implements BookSuggestService {
 		} catch (IOException e) {
 			log.error("query=" + query, e);
 			SlackLogBot.sendError(e);
-			throw new BookSearchException("엘라스틱서치 Search API 호출 에러");
+			throw new ElasticsearchException("엘라스틱서치 Search API 호출 에러");
 		}
 	}
 
-	private SuggestResponseDto hanToEngSuggest(String query) throws BookSearchException {
+	private SuggestResponseDto hanToEngSuggest(String query) throws ElasticsearchException {
 		String[] includes = {"title"};
 		SearchRequest searchRequest = bookHelper.createHanToEngSearchRequest(query, 1, includes);
 		try {
@@ -84,11 +84,11 @@ public class BookSuggestServiceImpl implements BookSuggestService {
 		} catch (IOException e) {
 			log.error("query=" + query, e);
 			SlackLogBot.sendError(e);
-			throw new BookSearchException("엘라스틱서치 Search API 호출 에러");
+			throw new ElasticsearchException("엘라스틱서치 Search API 호출 에러");
 		}
 	}
 
-	private SuggestResponseDto engToHanSuggest(String query) throws BookSearchException {
+	private SuggestResponseDto engToHanSuggest(String query) throws ElasticsearchException {
 		String[] includes = {"title"};
 		SearchRequest searchRequest = bookHelper.createEngToHanSearchRequest(query, 1, includes);
 		try {
@@ -97,7 +97,7 @@ public class BookSuggestServiceImpl implements BookSuggestService {
 		} catch (IOException e) {
 			log.error("query=" + query, e);
 			SlackLogBot.sendError(e);
-			throw new BookSearchException("엘라스틱서치 Search API 호출 에러");
+			throw new ElasticsearchException("엘라스틱서치 Search API 호출 에러");
 		}
 	}
 
