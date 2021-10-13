@@ -1,7 +1,7 @@
 package com.yaincoding.yacobooksapi.domain.book.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -155,7 +155,7 @@ final class BookHelper {
 		responseDto.setTotalHits(response.getHits().getTotalHits().value);
 
 		SearchHit[] hits = response.getHits().getHits();
-		List<Book> searchedBooks = Collections.emptyList();
+		List<Book> searchedBooks = new ArrayList<>();
 		for (SearchHit hit : hits) {
 			try {
 				Book book = objectMapper.readValue(hit.getSourceAsString(), Book.class);
